@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
-    <title>My Portfolio</title>
+    <title>Charley Thomas - Portfolio</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,11 +21,17 @@
             color: #ffffff; 
             font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 40px;
+            
+            /* Switched to flexbox to keep the main text perfectly centered */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             min-height: 100dvh; 
+            padding: 0 20px;
+            box-sizing: border-box;
             
-            /* Prevents users from accidentally selecting the background/text while swiping */
             user-select: none;
             -webkit-user-select: none;
         }
@@ -40,13 +46,34 @@
             pointer-events: none; 
         }
 
-        .version {
+        /* New Header Styling */
+        header {
             position: fixed;
-            bottom: 20px;
+            top: 0;
             left: 0;
             width: 100%;
+            padding: 25px 30px;
+            box-sizing: border-box;
+            text-align: left;
+            font-weight: 700;
+            font-size: 1.2rem;
+            z-index: 10;
+        }
+
+        /* New Footer Styling */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 30px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between; /* Pushes name to left, version to right */
+            align-items: center;
             font-size: 14px;
             color: rgba(255, 255, 255, 0.5);
+            z-index: 10;
         }
     </style>
 </head>
@@ -54,10 +81,17 @@
 
     <canvas id="bg-canvas"></canvas>
 
-    <h1>Welcome to My Page</h1>
-    <p>This is the start of something awesome.</p>
+    <header>Charley Thomas</header>
 
-    <div class="version">v1.0.0</div>
+    <main>
+        <h1>Welcome to My Page</h1>
+        <p>This is the start of something awesome.</p>
+    </main>
+
+    <footer>
+        <span>&copy; 2026 Charley Thomas</span>
+        <span>v1.0.0</span>
+    </footer>
 
     <script>
         const canvas = document.getElementById('bg-canvas');

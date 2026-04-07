@@ -11,30 +11,24 @@
     
     <style>
         body {
-            /* Your dark blue background color */
             background-color: #0b1120; 
             color: #ffffff; 
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 40px;
             text-align: center;
-            
-            /* UPDATED: Uses 'dvh' so the layout doesn't jump when the mobile URL bar hides */
             min-height: 100dvh; 
         }
 
-        /* Styling for our digital "canvas" */
         #bg-canvas {
             position: fixed;
             top: 0;
             left: 0;
-            /* Using CSS to force it to fill the screen visually */
             width: 100vw;
             height: 100vh;
             z-index: -1; 
         }
 
-        /* Styling for the version number */
         .version {
             position: fixed;
             bottom: 20px;
@@ -58,45 +52,40 @@
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
 
-        // We store these variables globally so the animation loop knows the exact screen size
         let width, height;
 
         function resizeCanvas() {
             width = window.innerWidth;
             height = window.innerHeight;
             
-            // Grab the device's pixel ratio (usually 2 or 3 on modern phones, 1 on standard monitors)
             const dpr = window.devicePixelRatio || 1;
             
-            // Scale the canvas memory up to match the sharp screen
             canvas.width = width * dpr;
             canvas.height = height * dpr;
             
-            // Scale our drawing context so we don't have to change any of our math
             ctx.scale(dpr, dpr);
             
-            // Keep the physical size of the canvas mapped to the exact window size
             canvas.style.width = width + 'px';
             canvas.style.height = height + 'px';
         }
         
-        // Redraw sizes whenever the device rotates or window resizes
         window.addEventListener('resize', resizeCanvas);
-        
-        // Initial setup run
         resizeCanvas();
 
         const spacing = 30; 
 
         function animate() {
-            // UPDATED: Using our stored width and height so we don't accidentally clear the wrong scaled area
             ctx.clearRect(0, 0, width, height); 
             
             const time = Date.now(); 
+            
+            // UPDATED: Calculate how much "leftover" space there is, and divide it by 2 to get the offset margins
+            const offsetX = (width % spacing) / 2;
+            const offsetY = (height % spacing) / 2;
 
-            // Loop using the true width and height
-            for (let x = 0; x < width; x += spacing) {
-                for (let y = 0; y < height; y += spacing) {
+            // UPDATED: Start our loops at the offset margins instead of at 0
+            for (let x = offsetX; x < width; x += spacing) {
+                for (let y = offsetY; y < height; y += spacing) {
                     
                     const wave = Math.sin((time / 5000) * Math.PI * 2 + (x + y) * 0.0015);
                     const radius = 2 + (wave * 1.0); 

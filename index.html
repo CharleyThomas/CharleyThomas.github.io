@@ -22,7 +22,6 @@
             font-family: 'Inter', sans-serif;
             margin: 0;
             
-            /* Switched to flexbox to keep the main text perfectly centered */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -46,7 +45,7 @@
             pointer-events: none; 
         }
 
-        /* New Header Styling */
+        /* Header Styling with Frosted Glass */
         header {
             position: fixed;
             top: 0;
@@ -58,9 +57,15 @@
             font-weight: 700;
             font-size: 1.2rem;
             z-index: 10;
+            
+            /* The Glass Effect */
+            background: rgba(11, 17, 32, 0.7); /* Semi-transparent version of your background */
+            backdrop-filter: blur(10px); /* Blurs whatever is behind it */
+            -webkit-backdrop-filter: blur(10px); /* For Safari support */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Subtle bottom edge */
         }
 
-        /* New Footer Styling */
+        /* Footer Styling with Frosted Glass */
         footer {
             position: fixed;
             bottom: 0;
@@ -69,11 +74,17 @@
             padding: 20px 30px;
             box-sizing: border-box;
             display: flex;
-            justify-content: space-between; /* Pushes name to left, version to right */
+            justify-content: space-between;
             align-items: center;
             font-size: 14px;
             color: rgba(255, 255, 255, 0.5);
             z-index: 10;
+            
+            /* The Glass Effect */
+            background: rgba(11, 17, 32, 0.7); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px); 
+            border-top: 1px solid rgba(255, 255, 255, 0.05); /* Subtle top edge */
         }
     </style>
 </head>

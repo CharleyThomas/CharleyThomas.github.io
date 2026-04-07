@@ -22,6 +22,7 @@
             --text-title: #0f172a;
             --border-glow: rgba(0, 0, 0, 0.08);
         }
+
         body {
             font-family: 'Inter', sans-serif;
             margin: 0; padding: 0;
@@ -30,66 +31,157 @@
             display: flex; flex-direction: column; min-height: 100vh;
             overflow-x: hidden;
         }
+
         .bg-dots {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: radial-gradient(circle, var(--dot-color) 1.5px, transparent 1.5px);
             background-size: 25px 25px; z-index: -1; pointer-events: none;
         }
+
         header {
-            background: var(--header-bg); backdrop-filter: blur(20px) saturate(160%);
+            background: var(--header-bg); 
+            backdrop-filter: blur(20px) saturate(160%);
             border-bottom: 1px solid var(--border-glow);
             position: sticky; top: 0; z-index: 1000; width: 100%;
         }
+
         .header-top {
-            max-width: 1200px; margin: 0 auto; display: flex;
-            justify-content: space-between; align-items: center; 
-            padding: 20px; position: relative;
+            max-width: 1200px; 
+            margin: 0 auto; 
+            display: flex;
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px; 
+            position: relative;
         }
-        header h1 { margin: 0; color: var(--text-title); font-weight: 900; font-size: 1.6em; position: absolute; left: 50%; transform: translateX(-50%); letter-spacing: -0.5px; }
-        .icon-btn { background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; color: var(--text-title); width: 40px; height: 40px; z-index: 1010; }
+
+        /* Title Centered in one line */
+        header h1 { 
+            margin: 0; 
+            color: var(--text-title); 
+            font-weight: 900; 
+            font-size: 1.6em; 
+            position: absolute; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            letter-spacing: -0.5px;
+            white-space: nowrap; 
+        }
+
+        .icon-btn { 
+            background: none; 
+            border: none; 
+            cursor: pointer; 
+            padding: 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: var(--text-title); 
+            width: 40px; 
+            height: 40px; 
+            z-index: 1010; 
+        }
+
+        /* Hamburger lines */
         .menu-toggle { flex-direction: column; gap: 6px; }
-        .menu-toggle span { display: block; width: 26px; height: 3px; background-color: var(--text-title); border-radius: 4px; transition: 0.4s; }
-        
-        nav { display: flex; flex-direction: column; align-items: center; width: 100%; max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.5s ease, opacity 0.3s ease; }
+        .menu-toggle span { 
+            display: block; 
+            width: 26px; 
+            height: 3px; 
+            background-color: var(--text-title); 
+            border-radius: 4px; 
+            transition: 0.4s; 
+        }
+
+        nav { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            width: 100%; 
+            max-height: 0; 
+            overflow: hidden; 
+            opacity: 0; 
+            transition: max-height 0.5s ease, opacity 0.3s ease; 
+        }
         nav.active { max-height: 100px; opacity: 1; padding-bottom: 20px; }
 
         main { flex: 1; width: 100%; }
 
-        footer { background: var(--header-bg); border-top: 1px solid var(--border-glow); padding: 45px 20px; margin-top: 60px; }
-        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; align-items: center; }
-        .footer-logo { color: var(--text-title); font-weight: 900; font-size: 1.4em; letter-spacing: -0.5px; }
+        /* Footer sorted to 45px */
+        footer { 
+            background: var(--header-bg); 
+            border-top: 1px solid var(--border-glow); 
+            padding: 45px 20px; 
+            margin-top: 60px; 
+            text-align: center;
+        }
+
+        .footer-logo { 
+            color: var(--text-title); 
+            font-weight: 900; 
+            font-size: 1.4em; 
+            letter-spacing: -0.5px; 
+        }
     </style>
 </head>
 <body>
-    <script>(function() { const savedTheme = localStorage.getItem('theme') || 'dark'; document.body.setAttribute('data-theme', savedTheme); })();</script>
+    <script>
+        (function() { 
+            const savedTheme = localStorage.getItem('theme') || 'dark'; 
+            document.body.setAttribute('data-theme', savedTheme); 
+        })();
+    </script>
+    
     <div class="bg-dots"></div>
+
     <header id="main-header">
         <div class="header-top">
-            <button class="icon-btn menu-toggle" id="mobile-menu-btn"><span></span><span></span><span></span></button>
+            <button class="icon-btn menu-toggle" id="mobile-menu-btn">
+                <span></span><span></span><span></span>
+            </button>
+
             <h1>Charley Thomas</h1>
-            <button class="icon-btn" id="theme-toggle">☼</button>
+
+            <button class="icon-btn" id="theme-toggle" aria-label="Toggle Theme">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </button>
         </div>
         <nav id="nav-menu">
             </nav>
     </header>
+
     <main>
         </main>
+
     <footer>
-        <div class="footer-content">
-            <div class="footer-logo">Charley Thomas</div>
-        </div>
+        <div class="footer-logo">Charley Thomas</div>
     </footer>
+
     <script>
         const btn = document.getElementById('mobile-menu-btn');
         const nav = document.getElementById('nav-menu');
-        btn.onclick = (e) => { e.stopPropagation(); nav.classList.toggle('active'); };
-        document.getElementById('theme-toggle').onclick = () => {
+        const themeBtn = document.getElementById('theme-toggle');
+
+        // Toggle menu tray
+        btn.onclick = (e) => { 
+            e.stopPropagation(); 
+            nav.classList.toggle('active'); 
+        };
+
+        // Theme toggle logic
+        themeBtn.onclick = () => {
             const current = document.body.getAttribute('data-theme');
             const target = current === 'dark' ? 'light' : 'dark';
             document.body.setAttribute('data-theme', target);
             localStorage.setItem('theme', target);
         };
-        window.onclick = (e) => { if (!e.target.closest('header') && nav.classList.contains('active')) nav.classList.remove('active'); };
+
+        // Close menu on outside click
+        window.onclick = (e) => { 
+            if (!e.target.closest('header') && nav.classList.contains('active')) {
+                nav.classList.remove('active');
+            }
+        };
     </script>
 </body>
 </html>

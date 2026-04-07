@@ -13,18 +13,24 @@
         body {
             /* Your dark blue background color */
             background-color: #0b1120; 
-            
-            /* The perfectly aligned dot pattern - Dot size increased to 3px */
-            background-image: radial-gradient(rgba(255, 255, 255, 0.3) 3px, transparent 3px);
-            background-size: 30px 30px; 
-            background-position: 0 0;
-            
             color: #ffffff; 
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 40px;
             text-align: center;
             min-height: 100vh;
+            
+            /* We removed the CSS background image because the Canvas handles it now! */
+        }
+
+        /* Styling for our digital "canvas" to make sure it sits behind the text */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; 
         }
 
         /* Styling for the version number */
@@ -40,10 +46,61 @@
 </head>
 <body>
 
+    <canvas id="bg-canvas"></canvas>
+
     <h1>Welcome to My Page</h1>
     <p>This is the start of something awesome.</p>
 
     <div class="version">v1.0.0</div>
 
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // This makes sure the canvas is always the exact size of your screen
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const spacing = 30; // The 30px grid spacing you chose
+
+        function animate() {
+            // Clear the screen for the next frame
+            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            
+            // Get the current time to drive the 2-second animation
+            const time = Date.now(); 
+
+            // Loop across the screen horizontally (x) and vertically (y)
+            for (let x = 0; x < canvas.width; x += spacing) {
+                for (let y = 0; y < canvas.height; y += spacing) {
+                    
+                    // THE MATH: We use a Sine wave to create an oscillating value between -1 and 1.
+                    // Dividing 'time' by 2000 makes the full cycle exactly 2 seconds.
+                    // Adding '(x + y)' offsets the wave based on position, creating the diagonal shimmer!
+                    const wave = Math.sin((time / 2000) * Math.PI * 2 + (x + y) * 0.005);
+                    
+                    // We map that wave to a dot size. 
+                    // Base radius is 1.5px, and it fluctuates by 1px up and down.
+                    const radius = 1.5 + (wave * 1.0); 
+                    
+                    // Draw the dot
+                    ctx.beginPath();
+                    ctx.arc(x, y, Math.max(0.1, radius), 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                    ctx.fill();
+                }
+            }
+            
+            // Tell the browser to loop this function for the next frame
+            requestAnimationFrame(animate); 
+        }
+
+        // Kick off the animation!
+        animate(); 
+    </script>
 </body>
 </html>

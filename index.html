@@ -18,7 +18,9 @@
             margin: 0;
             padding: 40px;
             text-align: center;
-            min-height: 100vh;
+            
+            /* UPDATED: Uses 'dvh' so the layout doesn't jump when the mobile URL bar hides */
+            min-height: 100dvh; 
         }
 
         /* Styling for our digital "canvas" */
@@ -26,6 +28,7 @@
             position: fixed;
             top: 0;
             left: 0;
+            /* Using CSS to force it to fill the screen visually */
             width: 100vw;
             height: 100vh;
             z-index: -1; 
@@ -55,27 +58,47 @@
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
 
+        // We store these variables globally so the animation loop knows the exact screen size
+        let width, height;
+
         function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            width = window.innerWidth;
+            height = window.innerHeight;
+            
+            // Grab the device's pixel ratio (usually 2 or 3 on modern phones, 1 on standard monitors)
+            const dpr = window.devicePixelRatio || 1;
+            
+            // Scale the canvas memory up to match the sharp screen
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            
+            // Scale our drawing context so we don't have to change any of our math
+            ctx.scale(dpr, dpr);
+            
+            // Keep the physical size of the canvas mapped to the exact window size
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
         }
+        
+        // Redraw sizes whenever the device rotates or window resizes
         window.addEventListener('resize', resizeCanvas);
+        
+        // Initial setup run
         resizeCanvas();
 
         const spacing = 30; 
 
         function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            // UPDATED: Using our stored width and height so we don't accidentally clear the wrong scaled area
+            ctx.clearRect(0, 0, width, height); 
             
             const time = Date.now(); 
 
-            for (let x = 0; x < canvas.width; x += spacing) {
-                for (let y = 0; y < canvas.height; y += spacing) {
+            // Loop using the true width and height
+            for (let x = 0; x < width; x += spacing) {
+                for (let y = 0; y < height; y += spacing) {
                     
-                    // UPDATED: Time divided by 5000 (slower), coordinates multiplied by 0.0015 (spread further apart)
                     const wave = Math.sin((time / 5000) * Math.PI * 2 + (x + y) * 0.0015);
-                    
-                    // Radius still rests at 2px and fluctuates by 1px
                     const radius = 2 + (wave * 1.0); 
                     
                     ctx.beginPath();

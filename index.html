@@ -21,7 +21,7 @@
             min-height: 100vh;
         }
 
-        /* Styling for our digital "canvas" to make sure it sits behind the text */
+        /* Styling for our digital "canvas" */
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -55,7 +55,6 @@
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
 
-        // This makes sure the canvas is always the exact size of your screen
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -63,26 +62,22 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        const spacing = 30; // The 30px grid spacing
+        const spacing = 30; 
 
         function animate() {
-            // Clear the screen for the next frame
             ctx.clearRect(0, 0, canvas.width, canvas.height); 
             
-            // Get the current time to drive the 2-second animation
             const time = Date.now(); 
 
-            // Loop across the screen horizontally (x) and vertically (y)
             for (let x = 0; x < canvas.width; x += spacing) {
                 for (let y = 0; y < canvas.height; y += spacing) {
                     
-                    // The Sine wave creating the diagonal shimmer
-                    const wave = Math.sin((time / 2000) * Math.PI * 2 + (x + y) * 0.005);
+                    // UPDATED: Time divided by 5000 (slower), coordinates multiplied by 0.0015 (spread further apart)
+                    const wave = Math.sin((time / 5000) * Math.PI * 2 + (x + y) * 0.0015);
                     
-                    // UPDATED: Base radius is now 2px, and it fluctuates by 1px up and down.
+                    // Radius still rests at 2px and fluctuates by 1px
                     const radius = 2 + (wave * 1.0); 
                     
-                    // Draw the dot
                     ctx.beginPath();
                     ctx.arc(x, y, Math.max(0.1, radius), 0, Math.PI * 2);
                     ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
@@ -90,11 +85,9 @@
                 }
             }
             
-            // Tell the browser to loop this function for the next frame
             requestAnimationFrame(animate); 
         }
 
-        // Kick off the animation!
         animate(); 
     </script>
 </body>

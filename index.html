@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="theme-color" content="#0b1120">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <title>My Portfolio</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +24,10 @@
             padding: 40px;
             text-align: center;
             min-height: 100dvh; 
+            
+            /* Prevents users from accidentally selecting the background/text while swiping */
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         #bg-canvas {
@@ -27,6 +37,7 @@
             width: 100vw;
             height: 100vh;
             z-index: -1; 
+            pointer-events: none; 
         }
 
         .version {
@@ -79,12 +90,10 @@
             
             const time = Date.now(); 
             
-            // UPDATED: Calculate how much "leftover" space there is, and divide it by 2 to get the offset margins
             const offsetX = (width % spacing) / 2;
             const offsetY = (height % spacing) / 2;
 
-            // UPDATED: Start our loops at the offset margins instead of at 0
-            for (let x = offsetX; x < width; x += spacing) {
+            for (let x = offsetX + spacing; x < width; x += spacing) {
                 for (let y = offsetY; y < height; y += spacing) {
                     
                     const wave = Math.sin((time / 5000) * Math.PI * 2 + (x + y) * 0.0015);

@@ -19,8 +19,6 @@
             padding: 40px;
             text-align: center;
             min-height: 100vh;
-            
-            /* We removed the CSS background image because the Canvas handles it now! */
         }
 
         /* Styling for our digital "canvas" to make sure it sits behind the text */
@@ -65,7 +63,7 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        const spacing = 30; // The 30px grid spacing you chose
+        const spacing = 30; // The 30px grid spacing
 
         function animate() {
             // Clear the screen for the next frame
@@ -78,14 +76,11 @@
             for (let x = 0; x < canvas.width; x += spacing) {
                 for (let y = 0; y < canvas.height; y += spacing) {
                     
-                    // THE MATH: We use a Sine wave to create an oscillating value between -1 and 1.
-                    // Dividing 'time' by 2000 makes the full cycle exactly 2 seconds.
-                    // Adding '(x + y)' offsets the wave based on position, creating the diagonal shimmer!
+                    // The Sine wave creating the diagonal shimmer
                     const wave = Math.sin((time / 2000) * Math.PI * 2 + (x + y) * 0.005);
                     
-                    // We map that wave to a dot size. 
-                    // Base radius is 1.5px, and it fluctuates by 1px up and down.
-                    const radius = 1.5 + (wave * 1.0); 
+                    // UPDATED: Base radius is now 2px, and it fluctuates by 1px up and down.
+                    const radius = 2 + (wave * 1.0); 
                     
                     // Draw the dot
                     ctx.beginPath();

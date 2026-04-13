@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pi Touchpad 163</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-color: #02041a;
-            --menu-bg: #111432;
-            --accent-color: #00d4ff;
-            --text-color: #ffffff;
+            /* Colors matched to your main site code */
+            --bg-color: #0b1120; 
+            --menu-bg: #0f172a; /* Slightly lighter slate for the menu depth */
+            --accent-color: #38bdf8; /* A nice sky blue to match the "Inter" vibe */
+            --text-color: #f8fafc;
         }
 
         body {
@@ -17,21 +22,28 @@
             padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', sans-serif;
             overflow: hidden;
             height: 100vh;
+            transition: background-color 0.4s ease;
         }
 
-        /* --- THE ANIMATED HAMBURGER --- */
-        #menu-trigger {
+        /* --- HEADER CONTAINER --- */
+        #header-bar {
             position: fixed;
             top: 25px;
             left: 25px;
             z-index: 2000;
-            background: transparent; /* Box removed */
-            border: none;             /* Border removed */
-            width: 40px;
-            height: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* --- THE ANIMATED HAMBURGER --- */
+        #menu-trigger {
+            background: transparent;
+            border: none;
+            width: 32px;
+            height: 22px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -41,29 +53,35 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* The 3 lines */
         #menu-trigger span {
             display: block;
             width: 100%;
-            height: 4px;
-            background-color: white;
+            height: 3px;
+            background-color: var(--text-color);
             border-radius: 4px;
             transition: all 0.3s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-            transform-origin: left; /* Essential for the "X" rotation */
+            transform-origin: left;
         }
 
-        /* Animation States */
-        #menu-trigger.open span:nth-child(1) {
-            transform: rotate(45deg);
+        /* Animation to X */
+        #menu-trigger.open span:nth-child(1) { transform: rotate(45deg); }
+        #menu-trigger.open span:nth-child(2) { opacity: 0; transform: translateX(-20px); }
+        #menu-trigger.open span:nth-child(3) { transform: rotate(-45deg); }
+
+        /* --- THE PAGE TITLE --- */
+        #page-title {
+            margin-left: 18px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text-color);
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
         }
 
-        #menu-trigger.open span:nth-child(2) {
+        #menu-trigger.open + #page-title {
             opacity: 0;
-            transform: translateX(-20px);
-        }
-
-        #menu-trigger.open span:nth-child(3) {
-            transform: rotate(-45deg);
+            transform: translateX(-10px);
         }
 
         /* --- THE SLIDE-IN MENU --- */
@@ -77,67 +95,57 @@
             z-index: 1000;
             transform: translateX(-100%);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-            box-shadow: 15px 0 30px rgba(0,0,0,0.7);
+            box-shadow: 20px 0 50px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
             padding: 100px 40px 40px 40px;
             box-sizing: border-box;
             border-radius: 0 40px 40px 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         #side-menu.open {
             transform: translateX(0);
         }
 
-        /* --- MENU LINKS (Clean & Box-free) --- */
         .menu-header {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             color: var(--accent-color);
             margin-bottom: 40px;
-            opacity: 0.6;
+            font-weight: 800;
+            opacity: 0.8;
         }
 
         .menu-link {
             text-decoration: none;
-            color: white;
+            color: var(--text-color);
             font-size: 1.6rem;
-            margin: 22px 0;
+            font-weight: 600;
+            margin: 20px 0;
             display: flex;
             align-items: center;
-            background: none;  /* No box */
-            border: none;      /* No box */
-            padding: 0;        /* No box */
             transition: color 0.3s, transform 0.2s;
         }
 
-        .menu-link span {
-            margin-right: 25px;
-            font-size: 2rem;
-        }
+        .menu-link span { margin-right: 25px; font-size: 1.8rem; }
+        .menu-link:active { color: var(--accent-color); transform: translateX(10px); }
 
-        .menu-link:active {
-            color: var(--accent-color);
-            transform: translateX(10px); /* Slight slide right when tapped */
-        }
-
-        /* --- OVERLAY & BACKGROUND --- */
+        /* --- OVERLAY --- */
         #overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
             display: none;
             z-index: 999;
         }
 
-        #overlay.active {
-            display: block;
-        }
+        #overlay.active { display: block; }
 
         #touchpad-area {
             width: 100%;
@@ -145,20 +153,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            opacity: 0.1;
+            opacity: 0.03;
             user-select: none;
-            text-transform: uppercase;
+            font-weight: 900;
+            font-size: 3rem;
             letter-spacing: 10px;
         }
     </style>
 </head>
 <body>
 
-    <button id="menu-trigger" onclick="toggleMenu()">
-        <span></span>
-        <span></span>
-        <span></span>
-    </button>
+    <div id="header-bar">
+        <button id="menu-trigger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <span id="page-title">Touchpad</span>
+    </div>
 
     <nav id="side-menu">
         <div class="menu-header">Hub 192.168.1.163</div>
@@ -167,13 +179,13 @@
         <a href="#" class="menu-link" style="color: var(--accent-color);"><span>🖱️</span> Touchpad</a>
         
         <div style="flex-grow: 1;"></div>
-        <a href="/" class="menu-link" style="font-size: 1.1rem; opacity: 0.4;">Disconnect</a>
+        <a href="/" class="menu-link" style="font-size: 1rem; opacity: 0.4;">Return Home</a>
     </nav>
 
     <div id="overlay" onclick="toggleMenu()"></div>
 
     <div id="touchpad-area">
-        <h1>Touchpad</h1>
+        <h1>SURFACE</h1>
     </div>
 
     <script>
@@ -184,7 +196,7 @@
             
             menu.classList.toggle('open');
             overlay.classList.toggle('active');
-            trigger.classList.toggle('open'); // Toggles the bar animation
+            trigger.classList.toggle('open');
         }
     </script>
 </body>

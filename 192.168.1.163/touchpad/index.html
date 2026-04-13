@@ -11,7 +11,8 @@
     <style>
         :root {
             --bg-color: #0b1120; 
-            --menu-bg: #0f172a; 
+            /* Semi-transparent menu background to allow the blur to show through */
+            --menu-bg: rgba(15, 23, 42, 0.85); 
             --accent-color: #38bdf8; 
             --text-color: #f8fafc;
         }
@@ -36,7 +37,7 @@
             align-items: center;
         }
 
-        /* --- MENU BUTTON (Custom Weighted Bars) --- */
+        /* --- MENU BUTTON (Uniform Bars) --- */
         #menu-trigger {
             background: none;
             border: none;
@@ -52,26 +53,16 @@
         #menu-trigger span {
             display: block;
             width: 26px;
+            height: 3px; /* All bars now consistent 3px */
             background-color: var(--text-color);
             border-radius: 4px;
-            transition: 0.4s ease; /* Smooth slide, no bounce */
+            transition: 0.4s ease;
         }
-
-        /* Thinner Top Bar */
-        #menu-trigger span:nth-child(1) { height: 2px; }
-        #menu-trigger span:nth-child(2) { height: 3px; }
-        #menu-trigger span:nth-child(3) { height: 3px; }
 
         /* Animated "X" Logic */
-        #menu-trigger.open span:nth-child(1) {
-            transform: translateY(9px) rotate(45deg);
-        }
-        #menu-trigger.open span:nth-child(2) {
-            opacity: 0;
-        }
-        #menu-trigger.open span:nth-child(3) {
-            transform: translateY(-9px) rotate(-45deg);
-        }
+        #menu-trigger.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+        #menu-trigger.open span:nth-child(2) { opacity: 0; }
+        #menu-trigger.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
         /* --- THE PAGE TITLE --- */
         #page-title {
@@ -89,7 +80,7 @@
             transform: translateX(-10px);
         }
 
-        /* --- THE SLIDE-IN MENU (Squared Edges) --- */
+        /* --- THE SLIDE-IN MENU (Frosted Glass) --- */
         #side-menu {
             position: fixed;
             top: 0;
@@ -97,17 +88,19 @@
             width: 380px;
             height: 100%;
             background-color: var(--menu-bg);
+            /* Frosted glass effect moved here */
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%); 
             z-index: 1000;
             transform: translateX(-100%);
-            /* Transition changed to standard 'ease' for a simple slide */
             transition: transform 0.4s ease; 
-            box-shadow: 20px 0 50px rgba(0,0,0,0.5);
+            box-shadow: 20px 0 50px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
             padding: 100px 40px 40px 40px;
             box-sizing: border-box;
-            border-radius: 0; /* Removed roundness */
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0; 
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         #side-menu.open {
@@ -138,15 +131,14 @@
         .menu-link span { margin-right: 25px; font-size: 1.8rem; }
         .menu-link:active { color: var(--accent-color); }
 
-        /* --- OVERLAY --- */
+        /* --- OVERLAY (Blur Removed) --- */
         #overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.4); /* Darkens slightly, no blur */
             display: none;
             z-index: 999;
         }

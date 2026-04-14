@@ -7,14 +7,15 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --bg-color: #0b1120; 
-            --menu-bg: rgba(15, 23, 42, 0.85); /* Transparent for the blur effect */
+            --menu-bg: rgba(15, 23, 42, 0.9); /* Darker, more solid glass */
             --accent-color: #38bdf8; 
             --text-color: #f8fafc;
+            --dim-text: rgba(248, 250, 252, 0.5);
         }
 
         body {
@@ -27,7 +28,7 @@
             height: 100vh;
         }
 
-        /* --- HEADER --- */
+        /* --- THE HEADER BAR --- */
         #header-bar {
             position: fixed;
             top: 25px;
@@ -37,7 +38,7 @@
             align-items: center;
         }
 
-        /* --- HAMBURGER (26x3, 6px gap, 0.4s ease) --- */
+        /* --- HAMBURGER (Strict 26x3, 6px gap) --- */
         #menu-trigger {
             background: none;
             border: none;
@@ -56,7 +57,6 @@
             height: 3px;
             background-color: var(--text-color);
             transition: 0.4s ease;
-            border-radius: 0; 
         }
 
         #menu-trigger.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
@@ -65,84 +65,104 @@
 
         /* --- TITLE NEXT TO ICON --- */
         #page-title {
-            margin-left: 18px;
-            font-size: 1.3rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            transition: opacity 0.3s;
-            pointer-events: none;
+            margin-left: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            transition: opacity 0.2s;
         }
 
         #menu-trigger.open + #page-title { opacity: 0; }
 
-        /* --- MENU (Squared + Frosted Glass) --- */
+        /* --- SIDE MENU (The Exact Layout) --- */
         #side-menu {
             position: fixed;
             top: 0;
             left: 0;
-            width: 380px;
+            width: 300px; /* Reduced width for better mobile fit */
             height: 100%;
             background-color: var(--menu-bg);
-            /* Frosted glass effect */
-            backdrop-filter: blur(20px) saturate(160%);
-            -webkit-backdrop-filter: blur(20px) saturate(160%); 
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
             z-index: 1000;
             transform: translateX(-100%);
             transition: transform 0.4s ease; 
             display: flex;
             flex-direction: column;
-            padding: 100px 40px 40px 40px;
+            padding: 100px 30px 40px 30px; /* Precise padding */
             box-sizing: border-box;
-            border-radius: 0; 
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         #side-menu.open { transform: translateX(0); }
 
-        /* --- IP HEADER (Google Sans Code) --- */
+        /* --- IP HEADER (Using Google Sans Code) --- */
         .menu-header {
-            font-family: 'Google Sans Code', monospace; 
-            font-size: 0.85rem;
+            font-family: 'Google Sans Code', monospace;
+            font-size: 0.75rem; /* Smaller, cleaner look */
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             color: var(--accent-color);
-            margin-bottom: 40px;
-            font-weight: 700;
+            margin-bottom: 35px;
+            font-weight: 600;
         }
 
+        /* --- NAVIGATION LINKS --- */
         .menu-link {
             text-decoration: none;
             color: var(--text-color);
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin: 20px 0;
+            font-size: 1.05rem; /* Matched to typical mobile sidebar scale */
+            font-weight: 500;
+            margin: 12px 0;
+            padding: 10px 0;
             display: flex;
             align-items: center;
-            transition: color 0.3s;
+            transition: color 0.2s;
         }
 
-        .menu-link span { margin-right: 25px; font-size: 1.8rem; }
-        .menu-link:active { color: var(--accent-color); }
+        /* The emoji/icon spacer */
+        .menu-link .icon {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
 
-        /* --- OVERLAY (No Blur) --- */
+        /* Active/Touchpad State */
+        .menu-link.active {
+            color: var(--accent-color);
+        }
+
+        /* --- RETURN HOME --- */
+        .footer-link {
+            margin-top: auto;
+            text-decoration: none;
+            color: var(--dim-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 10px 0;
+            transition: color 0.2s;
+        }
+
+        /* --- OVERLAY --- */
         #overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4); 
+            background: rgba(0,0,0,0.5); 
             display: none;
             z-index: 999;
         }
-
         #overlay.active { display: block; }
 
+        /* --- BACKGROUND SURFACE --- */
         #touchpad-area {
             width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center;
-            opacity: 0.03;
+            opacity: 0.05;
             user-select: none;
-            font-weight: 900; font-size: 3.5rem;
-            letter-spacing: 15px;
+            font-weight: 800; font-size: 2.5rem;
+            letter-spacing: 10px;
         }
     </style>
 </head>
@@ -160,12 +180,17 @@
     <nav id="side-menu">
         <div class="menu-header">HUB 192.168.1.163</div>
         
-        <a href="/192.168.1.163/controller" class="menu-link"><span>🕹️</span> Gamepad</a>
-        <a href="/192.168.1.163/keyboard" class="menu-link"><span>⌨️</span> Keyboard</a>
-        <a href="#" class="menu-link" style="color: var(--accent-color);"><span>🖱️</span> Touchpad</a>
+        <a href="/192.168.1.163/controller" class="menu-link">
+            <span class="icon">🕹️</span> Gamepad
+        </a>
+        <a href="/192.168.1.163/keyboard" class="menu-link">
+            <span class="icon">⌨️</span> Keyboard
+        </a>
+        <a href="#" class="menu-link active">
+            <span class="icon">🖱️</span> Touchpad
+        </a>
         
-        <div style="flex-grow: 1;"></div>
-        <a href="/" class="menu-link" style="font-size: 1rem; opacity: 0.4;">Return Home</a>
+        <a href="/" class="footer-link">Return Home</a>
     </nav>
 
     <div id="overlay" onclick="toggleMenu()"></div>

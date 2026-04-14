@@ -7,207 +7,208 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Google+Sans+Code:wght@700&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --bg-color: #0b1120; 
-            --menu-bg: rgba(15, 23, 42, 0.9); /* Darker, more solid glass */
+            --menu-bg: rgba(15, 23, 42, 0.95); 
             --accent-color: #38bdf8; 
             --text-color: #f8fafc;
-            --dim-text: rgba(248, 250, 252, 0.5);
+            --ui-border: rgba(255, 255, 255, 0.1);
+            --status-green: #22c55e;
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: 'Inter', sans-serif;
             overflow: hidden;
             height: 100vh;
-        }
-
-        /* --- THE HEADER BAR --- */
-        #header-bar {
-            position: fixed;
-            top: 25px;
-            left: 25px;
-            z-index: 2000;
             display: flex;
-            align-items: center;
         }
 
-        /* --- HAMBURGER (Strict 26x3, 6px gap) --- */
-        #menu-trigger {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
+        /* --- MAIN INTERFACE LAYOUT --- */
+        #main-ui {
+            flex: 1;
             display: flex;
-            flex-direction: column;
-            gap: 6px; 
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        #menu-trigger span {
-            display: block;
-            width: 26px;
-            height: 3px;
-            background-color: var(--text-color);
-            transition: 0.4s ease;
-        }
-
-        #menu-trigger.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-        #menu-trigger.open span:nth-child(2) { opacity: 0; }
-        #menu-trigger.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
-
-        /* --- TITLE NEXT TO ICON --- */
-        #page-title {
-            margin-left: 15px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: -0.2px;
-            transition: opacity 0.2s;
-        }
-
-        #menu-trigger.open + #page-title { opacity: 0; }
-
-        /* --- SIDE MENU (The Exact Layout) --- */
-        #side-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 300px; /* Reduced width for better mobile fit */
-            height: 100%;
-            background-color: var(--menu-bg);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            z-index: 1000;
-            transform: translateX(-100%);
-            transition: transform 0.4s ease; 
-            display: flex;
-            flex-direction: column;
-            padding: 100px 30px 40px 30px; /* Precise padding */
+            padding: 30px;
             box-sizing: border-box;
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
         }
 
+        /* Left Side: Hamburger & Vertical Label */
+        #left-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+            height: 100%;
+        }
+
+        #menu-trigger {
+            background: none; border: none; cursor: pointer; padding: 0;
+            display: flex; flex-direction: column; gap: 6px;
+            margin-bottom: 40px;
+        }
+        #menu-trigger span { width: 26px; height: 3px; background-color: white; transition: 0.4s; }
+
+        .vertical-label {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        /* Center: The Touchpad Surfaces */
+        #touch-container {
+            flex: 1;
+            display: flex;
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .surface {
+            border: 2px solid var(--ui-border);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        #main-pad { flex: 3; }
+
+        #side-buttons {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .side-btn { flex: 1; }
+
+        /* Persistent Connection Dot */
+        #main-status-dot {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            width: 12px;
+            height: 12px;
+            background-color: var(--status-green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--status-green);
+        }
+
+        /* --- SIDEBAR MENU --- */
+        #side-menu {
+            position: fixed; top: 0; left: 0;
+            width: 400px; height: 100%;
+            background-color: var(--menu-bg);
+            backdrop-filter: blur(20px);
+            z-index: 3000;
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+            padding: 40px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
         #side-menu.open { transform: translateX(0); }
 
-        /* --- IP HEADER (Using Google Sans Code) --- */
-        .menu-header {
-            font-family: 'Google Sans Code', monospace;
-            font-size: 0.75rem; /* Smaller, cleaner look */
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--accent-color);
-            margin-bottom: 35px;
-            font-weight: 600;
+        #close-btn {
+            background: none; border: none; color: white;
+            font-size: 2.5rem; cursor: pointer;
+            padding: 0; margin-bottom: 40px;
+            width: fit-content;
         }
 
-        /* --- NAVIGATION LINKS --- */
+        .hub-label {
+            font-family: 'Google Sans Code', monospace;
+            color: var(--accent-color);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 50px;
+        }
+
         .menu-link {
-            text-decoration: none;
-            color: var(--text-color);
-            font-size: 1.05rem; /* Matched to typical mobile sidebar scale */
-            font-weight: 500;
-            margin: 12px 0;
-            padding: 10px 0;
+            text-decoration: none; color: white;
+            font-size: 1.6rem; font-weight: 700;
+            display: flex; align-items: center;
+            margin-bottom: 35px;
+        }
+        .menu-link img { width: 40px; margin-right: 25px; } /* Using images for the 3D icons */
+        .menu-link.active { color: var(--accent-color); }
+
+        /* Status Footer in Sidebar */
+        #menu-status {
+            margin-top: auto;
             display: flex;
             align-items: center;
-            transition: color 0.2s;
+            gap: 15px;
         }
-
-        /* The emoji/icon spacer */
-        .menu-link .icon {
-            margin-right: 15px;
-            font-size: 1.2rem;
-            width: 24px;
-            text-align: center;
+        #menu-status-dot {
+            width: 12px; height: 12px;
+            background-color: var(--status-green);
+            border-radius: 50%;
         }
-
-        /* Active/Touchpad State */
-        .menu-link.active {
-            color: var(--accent-color);
+        .status-text {
+            font-size: 0.85rem; font-weight: 600; line-height: 1.4;
         }
+        .ip-text { font-family: 'Google Sans Code', monospace; font-size: 0.75rem; }
 
-        /* --- RETURN HOME --- */
-        .footer-link {
-            margin-top: auto;
-            text-decoration: none;
-            color: var(--dim-text);
-            font-size: 0.9rem;
-            font-weight: 500;
-            padding: 10px 0;
-            transition: color 0.2s;
-        }
-
-        /* --- OVERLAY --- */
         #overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); 
-            display: none;
-            z-index: 999;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); display: none; z-index: 2500;
         }
         #overlay.active { display: block; }
-
-        /* --- BACKGROUND SURFACE --- */
-        #touchpad-area {
-            width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0.05;
-            user-select: none;
-            font-weight: 800; font-size: 2.5rem;
-            letter-spacing: 10px;
-        }
     </style>
 </head>
 <body>
 
-    <div id="header-bar">
-        <button id="menu-trigger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <span id="page-title">Touchpad</span>
+    <div id="main-ui">
+        <div id="left-bar">
+            <button id="menu-trigger" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="vertical-label">Touchpad</div>
+        </div>
+
+        <div id="touch-container">
+            <div id="main-pad" class="surface"></div>
+            <div id="side-buttons">
+                <div class="side-btn surface"></div>
+                <div class="side-btn surface"></div>
+            </div>
+        </div>
+
+        <div id="main-status-dot"></div>
     </div>
 
     <nav id="side-menu">
-        <div class="menu-header">HUB 192.168.1.163</div>
+        <button id="close-btn" onclick="toggleMenu()">&times;</button>
         
-        <a href="/192.168.1.163/controller" class="menu-link">
-            <span class="icon">🕹️</span> Gamepad
-        </a>
-        <a href="/192.168.1.163/keyboard" class="menu-link">
-            <span class="icon">⌨️</span> Keyboard
-        </a>
-        <a href="#" class="menu-link active">
-            <span class="icon">🖱️</span> Touchpad
-        </a>
-        
-        <a href="/" class="footer-link">Return Home</a>
+        <div class="hub-label">HUB 192.168.1.163</div>
+
+        <a href="/192.168.1.163/controller" class="menu-link"><span>🕹️</span>&nbsp;&nbsp;Gamepad</a>
+        <a href="/192.168.1.163/keyboard" class="menu-link"><span>⌨️</span>&nbsp;&nbsp;Keyboard</a>
+        <a href="#" class="menu-link active"><span>🖱️</span>&nbsp;&nbsp;Touchpad</a>
+
+        <div id="menu-status">
+            <div id="menu-status-dot"></div>
+            <div class="status-text">
+                Connected to pi at:<br>
+                <span class="ip-text">192.168.1.163</span>
+            </div>
+        </div>
     </nav>
 
     <div id="overlay" onclick="toggleMenu()"></div>
 
-    <div id="touchpad-area">
-        <h1>SURFACE</h1>
-    </div>
-
     <script>
         function toggleMenu() {
-            const menu = document.getElementById('side-menu');
-            const overlay = document.getElementById('overlay');
-            const trigger = document.getElementById('menu-trigger');
-            
-            menu.classList.toggle('open');
-            overlay.classList.toggle('active');
-            trigger.classList.toggle('open');
+            document.getElementById('side-menu').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
         }
     </script>
 </body>

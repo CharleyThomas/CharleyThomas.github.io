@@ -8,10 +8,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 
     <style>
-        /* Material 3 Color Tokens & Reset */
+        /* Material 3 Baseline Color Tokens */
         :root {
             --md-sys-color-primary: #6750A4;
             --md-sys-color-on-primary: #FFFFFF;
@@ -22,13 +22,9 @@
             --md-sys-color-on-surface: #1D1B20;
             --md-sys-color-on-surface-variant: #49454F;
             --md-sys-color-outline: #79747E;
-            
-            /* Shape tokens */
-            --md-shape-corner-medium: 12px;
-            --md-shape-corner-large: 28px;
-            --md-shape-corner-full: 9999px;
         }
 
+        /* Basic Reset */
         * {
             margin: 0;
             padding: 0;
@@ -39,36 +35,103 @@
             font-family: 'Roboto', sans-serif;
             background-color: var(--md-sys-color-surface);
             color: var(--md-sys-color-on-surface);
-            padding-bottom: 80px; /* Space for FAB */
+            padding: 16px;
+            padding-bottom: 100px; /* Space for FAB */
         }
 
-        /* Navigation */
+        /* Material 3 App Bar / Nav */
         .m3-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 1.5rem;
+            padding: 12px 16px;
             background-color: var(--md-sys-color-surface);
+            max-width: 800px;
+            margin: 0 auto 16px auto;
         }
 
         .nav-brand {
-            font-size: 1.25rem;
-            font-weight: 500;
+            font-size: 22px;
+            font-weight: 400;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 8px;
-        }
-
-        .nav-item {
+        .nav-links a {
             text-decoration: none;
             color: var(--md-sys-color-on-surface-variant);
-            padding: 0.5rem 1rem;
-            border-radius: var(--md-shape-corner-full);
+            padding: 8px 16px;
+            border-radius: 9999px;
             font-weight: 500;
-            transition: background-color 0.2s;
+            font-size: 14px;
+            margin-left: 4px;
         }
 
-        .nav-item.active {
-            background
+        .nav-links a.active {
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+        }
+
+        /* M3 Expressive Hero Banner */
+        .m3-hero {
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            padding: 48px 24px;
+            text-align: center;
+            border-radius: 28px; /* Classic M3 Large Rounding */
+            max-width: 800px;
+            margin: 0 auto 24px auto;
+        }
+
+        .m3-hero h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .m3-hero p {
+            font-size: 16px;
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+
+        /* M3 Filled Button Component */
+        .m3-btn {
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
+            transition: box-shadow 0.2s, transform 0.1s;
+        }
+
+        .m3-btn:hover {
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .m3-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Content Grid */
+        .m3-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 600px) {
+            .m3-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* M3 Container Cards */
+        .m3-card {
+            background-color: var(--md-sys-color-surface-variant);
+            color: var(--md-

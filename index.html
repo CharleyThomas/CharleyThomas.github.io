@@ -4,50 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Material 3 Expressive Site</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-    <nav class="m3-nav">
-        <div class="nav-brand">Material 3</div>
-        <div class="nav-links">
-            <a href="#" class="nav-item active">Home</a>
-            <a href="#" class="nav-item">Work</a>
-            <a href="#" class="nav-item">About</a>
-        </div>
-    </nav>
+    <style>
+        /* Material 3 Color Tokens & Reset */
+        :root {
+            --md-sys-color-primary: #6750A4;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #EADDFF;
+            --md-sys-color-on-primary-container: #21005D;
+            --md-sys-color-surface: #FEF7FF;
+            --md-sys-color-surface-variant: #E7E0EC;
+            --md-sys-color-on-surface: #1D1B20;
+            --md-sys-color-on-surface-variant: #49454F;
+            --md-sys-color-outline: #79747E;
+            
+            /* Shape tokens */
+            --md-shape-corner-medium: 12px;
+            --md-shape-corner-large: 28px;
+            --md-shape-corner-full: 9999px;
+        }
 
-    <header class="m3-hero">
-        <h1>Create with expression</h1>
-        <p>Material 3 brings personal, dynamic, and expressive design to the web.</p>
-        <button class="m3-btn-filled">Get Started</button>
-    </header>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <main class="m3-container">
-        <section class="m3-card">
-            <div class="card-content">
-                <span class="material-icons-outlined card-icon">palette</span>
-                <h2>Dynamic Color</h2>
-                <p>Expressive design uses vibrant tones, rich contrast, and organic shapes to draw attention to key actions and content.</p>
-            </div>
-        </section>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            padding-bottom: 80px; /* Space for FAB */
+        }
 
-        <section class="m3-card outlined">
-            <div class="card-content">
-                <span class="material-icons-outlined card-icon">auto_awesome</span>
-                <h2>Shape & Form</h2>
-                <p>Fully rounded corners ($28\text{px}$ or fully pill-shaped) define the unique, playful container style of Material 3.</p>
-            </div>
-        </section>
-    </main>
+        /* Navigation */
+        .m3-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--md-sys-color-surface);
+        }
 
-    <button class="m3-fab">
-        <span class="material-icons-outlined">edit</span>
-    </button>
+        .nav-brand {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
 
-</body>
-</html>
+        .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: var(--md-sys-color-on-surface-variant);
+            padding: 0.5rem 1rem;
+            border-radius: var(--md-shape-corner-full);
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item.active {
+            background

@@ -1,1 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR Media Converter</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f0f13;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .upload-container {
+            background-color: #1a1a24;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 { margin-bottom: 20px; font-size: 24px; color: #3b82f6; }
+        input[type="file"] { display: none; }
+        .custom-file-upload {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+            margin-bottom: 20px;
+        }
+        .custom-file-upload:hover { background: #2563eb; }
+        .options { margin: 20px 0; text-align: left; }
+        .options label { display: block; margin: 10px 0; cursor: pointer; }
+        button.launch-btn {
+            width: 100%;
+            padding: 14px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button.launch-btn:hover { background: #059669; }
+        #file-name { color: #9ca3af; font-size: 14px; margin-top: -10px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
 
+<div class="upload-container">
+    <h1>VR Media Viewer</h1>
+    
+    <label class="custom-file-upload">
+        <input type="file" id="media-input" accept="image/*,video/*">
+        Choose Photo or Video
+    </label>
+    <div id="file-name">No file selected</div>
+
+    <div class="options">
+        <p><strong>Media Type:</strong></p>
+        <label><input type="radio" name="media-type" value="2d" checked> Standard (2D Flat Screen)</label>
+        <label><input type="radio" name="media-type" value="360"> 360° Panoramic</label>
+    </div>
+
+    <button class="launch-btn" id="launch-btn">Launch VR Mode</button>
+</div>
+
+<script>
+    let mediaUrl = '';
+    let isVideo = false;
+
+    document.getElementById('media-input').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        document.getElementById('file-name').textContent = file.name;
+        isVideo = file.type.startsWith('video/');
+        
+        // Create a temporary URL for the file local to the browser
+        mediaUrl = URL.createObjectURL(file);
+    });
+
+    document.getElementById('launch-btn').addEventListener('click', function() {
+        if (!mediaUrl) {
+            alert('Please upload a file first!');
+            return;
+        }
+
+        const mode = document.querySelector('input[name="media-type"]:checked').value;
+        
+        // Store the data in sessionStorage so viewer.html can read it
+        sessionStorage.setItem('vrMediaUrl', mediaUrl);
+        sessionStorage.setItem('vrMediaType', mode);
+        sessionStorage.setItem('vrIsVideo', isVideo);
+
+        // Redirect to your viewer page
+        window.location.href = 'viewer.html';
+    });
+</script>
+
+</body>
+</html>

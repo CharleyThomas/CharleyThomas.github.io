@@ -3,75 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VR Mode</title>
+    <title>VR Media Converter</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg-main: #000000;
-            --border-color: #1f1f1f;
-            --border-hover: #2e2e2e;
-            --text-main: #ffffff;
-            --text-muted: #707070;
-            --accent: #ffffff;
-            --accent-text: #000000;
-            --accent-hover: #e5e5e5;
-        }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
+            background-color: #000000;
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
             -webkit-font-smoothing: antialiased;
         }
 
         .workspace {
             width: 100%;
             max-width: 400px;
-            box-sizing: border-box;
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
         }
 
         h1 {
             font-size: 16px;
             font-weight: 500;
             margin: 0 0 20px 0;
+            color: #ffffff;
             letter-spacing: -0.01em;
         }
 
         /* Drag and Drop Zone */
         .drop-zone {
             position: relative;
-            border: 1px dashed var(--border-color);
+            border: 1px dashed #2e2e2e;
             border-radius: 4px;
-            padding: 40px 16px;
+            padding: 48px 16px;
             text-align: center;
             background: transparent;
             cursor: pointer;
-            transition: border-color 0.1s ease;
+            transition: border-color 0.15s ease;
         }
 
-        .drop-zone.drag-over {
-            border-color: var(--border-hover);
-            background-color: #0f0f0f;
+        .drop-zone:hover {
+            border-color: #4a4a4a;
         }
 
         .drop-zone p {
             margin: 0;
             font-size: 13px;
-            color: var(--text-muted);
-            pointer-events: none; /* Keeps text from interfering with drag/clicks */
+            color: #707070;
+            pointer-events: none;
         }
 
         .drop-zone span {
-            color: var(--text-main);
+            color: #ffffff;
             text-decoration: underline;
         }
 
@@ -88,7 +79,7 @@
 
         /* Configuration Options */
         .options-group {
-            margin: 24px 0;
+            margin: 28px 0;
         }
 
         .options-group p {
@@ -96,7 +87,7 @@
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: var(--text-muted);
+            color: #707070;
             margin: 0 0 12px 0;
         }
 
@@ -104,24 +95,111 @@
             display: flex;
             align-items: center;
             font-size: 13px;
-            margin: 8px 0;
+            margin: 10px 0;
             cursor: pointer;
-            color: var(--text-main);
+            color: #ffffff;
         }
 
         .radio-label input {
             margin-right: 10px;
-            accent-color: var(--text-main);
+            accent-color: #ffffff;
         }
 
         /* Action Button */
         .submit-btn {
             width: 100%;
-            padding: 10px;
-            background-color: var(--accent);
-            color: var(--accent-text);
+            padding: 12px;
+            background-color: #ffffff;
+            color: #000000;
             border: none;
             border-radius: 4px;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
+            transition: background-color 0.1s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #e5e5e5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="workspace">
+    <h1>VR Media Pipeline</h1>
+    
+    <div class="drop-zone" id="drop-zone">
+        <p id="drop-text">Drag and drop files here or <span>browse</span></p>
+        <input type="file" id="file-input">
+    </div>
+
+    <div class="options-group">
+        <p>Projection Mode</p>
+        <label class="radio-label">
+            <input type="radio" name="projection" value="2d" checked>
+            Standard 2D Screen (with ambient background)
+        </label>
+        <label class="radio-label">
+            <input type="radio" name="projection" value="360">
+            360° Equirectangular Sphere
+        </label>
+    </div>
+
+    <button class="submit-btn" id="launch-btn">Initialize VR Environment</button>
+</div>
+
+<script>
+    const fileInput = document.getElementById('file-input');
+    const dropZone = document.getElementById('drop-zone');
+    const dropText = document.getElementById('drop-text');
+    const launchBtn = document.getElementById('launch-btn');
+
+    let mediaUrl = '';
+    let isVideo = false;
+
+    // Visual effect on drag over
+    fileInput.addEventListener('dragover', () => dropZone.style.borderColor = '#4a4a4a');
+    fileInput.addEventListener('dragleave', () => dropZone.style.borderColor = '#2e2e2e');
+    fileInput.addEventListener('drop', () => dropZone.style.borderColor = '#2e2e2e');
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+            handleFile(e.target.files[0]);
+        }
+    });
+
+    function handleFile(file) {
+        const isImg = file.type.startsWith('image/') || /\.(jpg|jpeg|png|webp|gif)$/i.test(file.name);
+        const isVid = file.type.startsWith('video/') || /\.(mp4|mov|webm|ogv)$/i.test(file.name);
+
+        if (!isImg && !isVid) {
+            alert('Unsupported file type. Please upload an image or video.');
+            return;
+        }
+        
+        if (mediaUrl) URL.revokeObjectURL(mediaUrl);
+
+        dropText.innerHTML = `Target: <span style="text-decoration:none; color:#ffffff;">${file.name}</span>`;
+        isVideo = isVid;
+        mediaUrl = URL.createObjectURL(file);
+    }
+
+    launchBtn.addEventListener('click', () => {
+        if (!mediaUrl) {
+            alert('Please select or drop a valid file entry.');
+            return;
+        }
+
+        const projectionMode = document.querySelector('input[name="projection"]:checked').value;
+        
+        sessionStorage.setItem('vrMediaUrl', mediaUrl);
+        sessionStorage.setItem('vrMediaType', projectionMode);
+        sessionStorage.setItem('vrIsVideo', isVideo);
+
+        window.location.href = 'viewer.html';
+    });
+</script>
+
+</body>
+</html>

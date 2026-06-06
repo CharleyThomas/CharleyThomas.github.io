@@ -5,106 +5,214 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VR Media Converter</title>
     <style>
+        :root {
+            --bg-main: #0a0a0c;
+            --bg-card: #121214;
+            --border-color: #26262a;
+            --border-hover: #3f3f46;
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f0f13;
-            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            -webkit-font-smoothing: antialiased;
         }
-        .upload-container {
-            background-color: #1a1a24;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            text-align: center;
-            max-width: 400px;
+
+        .container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 40px;
             width: 100%;
+            max-width: 440px;
+            box-sizing: border-box;
         }
-        h1 { margin-bottom: 20px; font-size: 24px; color: #3b82f6; }
-        input[type="file"] { display: none; }
-        .custom-file-upload {
-            display: inline-block;
-            padding: 12px 24px;
-            background: #3b82f6;
-            color: white;
+
+        h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 24px 0;
+            letter-spacing: -0.02em;
+        }
+
+        /* Drag and Drop Zone */
+        .drop-zone {
+            border: 1px dashed var(--border-color);
             border-radius: 6px;
+            padding: 48px 20px;
+            text-align: center;
+            background: transparent;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
-            margin-bottom: 20px;
+            transition: border-color 0.15s ease, background-color 0.15s ease;
         }
-        .custom-file-upload:hover { background: #2563eb; }
-        .options { margin: 20px 0; text-align: left; }
-        .options label { display: block; margin: 10px 0; cursor: pointer; }
-        button.launch-btn {
+
+        .drop-zone.drag-over {
+            border-color: var(--accent);
+            background-color: rgba(37, 99, 235, 0.04);
+        }
+
+        .drop-zone p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .drop-zone span {
+            color: var(--text-main);
+            text-decoration: underline;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        /* Configuration Options */
+        .options-group {
+            margin: 28px 0;
+        }
+
+        .options-group p {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0 0 12px 0;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin: 10px 0;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        .radio-label input {
+            margin-right: 10px;
+            accent-color: var(--accent);
+        }
+
+        /* Action Button */
+        .submit-btn {
             width: 100%;
-            padding: 14px;
-            background: #10b981;
-            color: white;
+            padding: 12px;
+            background-color: var(--accent);
+            color: #ffffff;
             border: none;
             border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background-color 0.15s ease;
         }
-        button.launch-btn:hover { background: #059669; }
-        #file-name { color: #9ca3af; font-size: 14px; margin-top: -10px; margin-bottom: 15px; }
+
+        .submit-btn:hover {
+            background-color: var(--accent-hover);
+        }
     </style>
 </head>
 <body>
 
-<div class="upload-container">
-    <h1>VR Media Viewer</h1>
+<div class="container">
+    <h1>VR Media Pipeline</h1>
     
-    <label class="custom-file-upload">
-        <input type="file" id="media-input" accept="image/*,video/*">
-        Choose Photo or Video
-    </label>
-    <div id="file-name">No file selected</div>
-
-    <div class="options">
-        <p><strong>Media Type:</strong></p>
-        <label><input type="radio" name="media-type" value="2d" checked> Standard (2D Flat Screen)</label>
-        <label><input type="radio" name="media-type" value="360"> 360° Panoramic</label>
+    <div class="drop-zone" id="drop-zone">
+        <p id="drop-text">Drag and drop files here or <span>browse</span></p>
+        <input type="file" id="file-input" accept="image/*,video/*">
     </div>
 
-    <button class="launch-btn" id="launch-btn">Launch VR Mode</button>
+    <div class="options-group">
+        <p>Projection Mode</p>
+        <label class="radio-label">
+            <input type="radio" name="projection" value="2d" checked>
+            Standard 2D Screen (with ambient background)
+        </label>
+        <label class="radio-label">
+            <input type="radio" name="projection" value="360">
+            360° Equirectangular Sphere
+        </label>
+    </div>
+
+    <button class="submit-btn" id="launch-btn">Initialize VR Environment</button>
 </div>
 
 <script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const dropText = document.getElementById('drop-text');
+    const launchBtn = document.getElementById('launch-btn');
+
     let mediaUrl = '';
     let isVideo = false;
 
-    document.getElementById('media-input').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
+    // Trigger file input clicking on container click
+    dropZone.addEventListener('click', () => fileInput.click());
 
-        document.getElementById('file-name').textContent = file.name;
-        isVideo = file.type.startsWith('video/');
-        
-        // Create a temporary URL for the file local to the browser
-        mediaUrl = URL.createObjectURL(file);
+    // Drag and Drop event listeners
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
     });
 
-    document.getElementById('launch-btn').addEventListener('click', function() {
+    ['dragleave', 'dragend'].forEach(type => {
+        dropZone.addEventListener(type, () => {
+            dropZone.classList.remove('drag-over');
+        });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        
+        if (e.dataTransfer.files.length) {
+            handleFile(e.dataTransfer.files[0]);
+        }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) {
+            handleFile(e.target.files[0]);
+        }
+    });
+
+    function handleFile(file) {
+        if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+            alert('Unsupported file type. Please upload an image or video.');
+            return;
+        }
+        
+        // Revoke previous object URL if it exists to free memory
+        if (mediaUrl) URL.revokeObjectURL(mediaUrl);
+
+        dropText.textContent = `Target: ${file.name}`;
+        isVideo = file.type.startsWith('video/');
+        mediaUrl = URL.createObjectURL(file);
+    }
+
+    launchBtn.addEventListener('click', () => {
         if (!mediaUrl) {
-            alert('Please upload a file first!');
+            alert('Please select or drop a valid file entry.');
             return;
         }
 
-        const mode = document.querySelector('input[name="media-type"]:checked').value;
+        const projectionMode = document.querySelector('input[name="projection"]:checked').value;
         
-        // Store the data in sessionStorage so viewer.html can read it
         sessionStorage.setItem('vrMediaUrl', mediaUrl);
-        sessionStorage.setItem('vrMediaType', mode);
+        sessionStorage.setItem('vrMediaType', projectionMode);
         sessionStorage.setItem('vrIsVideo', isVideo);
 
-        // Redirect to your viewer page
         window.location.href = 'viewer.html';
     });
 </script>

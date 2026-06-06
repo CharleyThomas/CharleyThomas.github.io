@@ -11,7 +11,6 @@
     <style>
         :root {
             --bg-main: #000000;
-            --bg-card: #0a0a0a;
             --border-color: #1f1f1f;
             --border-hover: #2e2e2e;
             --text-main: #ffffff;
@@ -33,14 +32,11 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 32px;
+        .workspace {
             width: 100%;
             max-width: 400px;
             box-sizing: border-box;
+            padding: 20px;
         }
 
         h1 {
@@ -52,6 +48,7 @@
 
         /* Drag and Drop Zone */
         .drop-zone {
+            position: relative;
             border: 1px dashed var(--border-color);
             border-radius: 4px;
             padding: 40px 16px;
@@ -70,6 +67,7 @@
             margin: 0;
             font-size: 13px;
             color: var(--text-muted);
+            pointer-events: none; /* Keeps text from interfering with drag/clicks */
         }
 
         .drop-zone span {
@@ -77,8 +75,15 @@
             text-decoration: underline;
         }
 
+        /* Invisible but fully clickable input overlaying the drop zone */
         #file-input {
-            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
         }
 
         /* Configuration Options */
@@ -120,53 +125,3 @@
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.1s ease;
-        }
-
-        .submit-btn:hover {
-            background-color: var(--accent-hover);
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>VR Media Pipeline</h1>
-    
-    <div class="drop-zone" id="drop-zone">
-        <p id="drop-text">Drag and drop files here or <span>browse</span></p>
-        <input type="file" id="file-input">
-    </div>
-
-    <div class="options-group">
-        <p>Projection Mode</p>
-        <label class="radio-label">
-            <input type="radio" name="projection" value="2d" checked>
-            Standard 2D Screen (with ambient background)
-        </label>
-        <label class="radio-label">
-            <input type="radio" name="projection" value="360">
-            360° Equirectangular Sphere
-        </label>
-    </div>
-
-    <button class="submit-btn" id="launch-btn">Initialize VR Environment</button>
-</div>
-
-<script>
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const dropText = document.getElementById('drop-text');
-    const launchBtn = document.getElementById('launch-btn');
-
-    let mediaUrl = '';
-    let isVideo = false;
-
-    dropZone.addEventListener('click', () => fileInput.click());
-
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('drag-over');
-    });
-
-    ['dragleave', 'dragend'].forEach(type

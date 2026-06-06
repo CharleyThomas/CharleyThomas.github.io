@@ -9,25 +9,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: #000000;
             color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             margin: 0;
             padding: 20px;
-            box-sizing: border-box;
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
             -webkit-font-smoothing: antialiased;
         }
 
         .workspace {
             width: 100%;
             max-width: 400px;
-            display: flex;
-            flex-direction: column;
+            display: block;
         }
 
         h1 {
@@ -77,7 +78,7 @@
             cursor: pointer;
         }
 
-        /* Configuration Options */
+        /* Configuration Container */
         .options-group {
             margin: 28px 0;
         }
@@ -88,4 +89,36 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: #707070;
-            margin: 0 0 12
+            margin: 0 0 16px 0;
+        }
+
+        /* Modern Custom Switch Components */
+        .switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #ffffff;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .switch-container span {
+            font-weight: 400;
+        }
+
+        .switch-track {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            background-color: #1f1f1f;
+            border: 1px solid #2e2e2e;
+            border-radius: 10px;
+            transition: background-color 0.15s ease;
+        }
+
+        .switch-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width:

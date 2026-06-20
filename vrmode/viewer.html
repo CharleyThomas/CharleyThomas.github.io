@@ -1,1 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR Environment Viewer</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000000;
+        }
+        .error-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: sans-serif;
+            text-align: center;
+            z-index: 9999;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-overlay" id="error-screen">
+        <p>No active media stream found.</p>
+        <button onclick="window.location.href='index.html'">Return to Pipeline</button>
+    </div>
+
+    <a-scene mockup-envelope="true" loading-screen="dotsColor: white; backgroundColor: black">
+        
+        <a-assets id="asset-container">
+            </a-assets>
+
+        <a-entity camera look-controls position="0 1.6 0"></a-entity>
+
+        <a-entity id="vr-stage"></a-entity>
+
+    </a-scene>
+
+    <script>
+        // Extract initialization tokens from Session Storage
+        const mediaUrl = sessionStorage.getItem('vrMediaUrl');
+        const mediaType = sessionStorage.getItem('vrMediaType'); // '2d' or '360'
+        const isVideo = sessionStorage.getItem('vrIsVideo') === 'true';
+
+        if (!mediaUrl) {
+            document.getElementById('error-screen').style.display = 'block';
+        } else {
+            const assets = document.getElementById('asset-container');
+            const stage = document.getElementById('vr-stage');
+            let assetEl;
+
+            // 1. Generate Asset DOM node depending on file classification
+            if (isVideo) {
+                assetEl = document.createElement('video');
+                assetEl.setAttribute('id', 'vr-source');
+                assetEl.setAttribute('src', mediaUrl);
+                assetEl.setAttribute('autoplay', 'true');
+                assetEl.setAttribute('loop', 'true');
+                assetEl.setAttribute('crossorigin', 'anonymous');
+                assetEl.setAttribute('playsinline', 'true');
+                assetEl.setAttribute('webkit-playsinline', 'true');
+                // Mobile browsers require user interactions to unlock audio tracks
+                window.addEventListener('click', () => { assetEl.play(); }, { once: true });
+            } else {
+                assetEl = document.createElement('img');
+                assetEl.setAttribute('id', 'vr-source');
+                assetEl.setAttribute('src', mediaUrl);
+                assetEl.setAttribute('crossorigin', 'anonymous');
+            }
+
+            assets.appendChild(assetEl);
+
+            // 2. Build the Virtual Architecture based on projection preference
+            if (mediaType === '360') {
+                // 360 Degree Equirectangular Mode
+                const sphere = document.createElement(isVideo ? 'a-videosphere' : 'a-sky');
+                sphere.setAttribute('src', '#vr-source');
+                // Rotate slightly so the initial viewpoint faces front center
+                sphere.setAttribute('rotation', '0 -90 0');
+                stage.appendChild(sphere);
+            } else {
+                // 2D Cinematic Screen with Ambient Backglow
+                
+                // Dark background environment shell to keep out standard sky colors
+                const skyShell = document.createElement('a-sky');
+                skyShell.setAttribute('color', '#020202');
+                stage.appendChild(skyShell);
+
+                // Primary Focused Display Screen (Positioned 3 meters in front)
+                const mainScreen = document.createElement(isVideo ? 'a-video' : 'a-image');
+                mainScreen.setAttribute('src', '#vr-source');
+                mainScreen.setAttribute('position', '0 1.6 -3');
+                mainScreen.setAttribute('width', '4');
+                mainScreen.setAttribute('height', '2.25'); // standard 16:9 aspect ratio
+                stage.appendChild(mainScreen);
+
+                // YouTube Style Ambient Layer (Massive screen behind main panel)
+                const ambientScreen = document.createElement(isVideo ? 'a-video' : 'a-image');
+                ambientScreen.setAttribute('src', '#vr-source');
+                ambientScreen.setAttribute('position', '0 1.6 -3.5'); // Slightly behind the main screen
+                ambientScreen.setAttribute('width', '12');            // Massive scale
+                ambientScreen.setAttribute('height', '6.75');
+                ambientScreen.setAttribute('opacity', '0.25');        // Soft glowing opacity
+                // WebGL doesn't have native CSS blur components, so blending opacity does the heavy lifting
+                stage.appendChild(ambientScreen);
+            }
+        }
+    </script>
+</body>
+</html>
 

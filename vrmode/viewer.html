@@ -36,7 +36,19 @@
         <a-assets id="asset-container">
             </a-assets>
 
-        <a-entity camera look-controls position="0 1.6 0"></a-entity>
+        <a-entity camera look-controls position="0 1.6 0">
+            <a-cursor 
+                id="cursor"
+                animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+                animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
+                event-set__mouseenter="_event: mouseenter; color: #ffffff"
+                event-set__mouseleave="_event: mouseleave; color: #aaaaaa"
+                color="#aaaaaa"
+                scale="1 1 1"
+                geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                material="color: #ffffff; shader: flat; opacity: 0.7">
+            </a-cursor>
+        </a-entity>
 
         <a-entity id="vr-stage"></a-entity>
 
@@ -65,7 +77,8 @@
                 assetEl.setAttribute('crossorigin', 'anonymous');
                 assetEl.setAttribute('playsinline', 'true');
                 assetEl.setAttribute('webkit-playsinline', 'true');
-                // Mobile browsers require user interactions to unlock audio tracks
+                
+                // Clicking anywhere unlocks video play restrictions on mobile browsers
                 window.addEventListener('click', () => { assetEl.play(); }, { once: true });
             } else {
                 assetEl = document.createElement('img');
@@ -81,37 +94,32 @@
                 // 360 Degree Equirectangular Mode
                 const sphere = document.createElement(isVideo ? 'a-videosphere' : 'a-sky');
                 sphere.setAttribute('src', '#vr-source');
-                // Rotate slightly so the initial viewpoint faces front center
                 sphere.setAttribute('rotation', '0 -90 0');
                 stage.appendChild(sphere);
             } else {
                 // 2D Cinematic Screen with Ambient Backglow
-                
-                // Dark background environment shell to keep out standard sky colors
                 const skyShell = document.createElement('a-sky');
                 skyShell.setAttribute('color', '#020202');
                 stage.appendChild(skyShell);
 
-                // Primary Focused Display Screen (Positioned 3 meters in front)
+                // Primary Focused Display Screen
                 const mainScreen = document.createElement(isVideo ? 'a-video' : 'a-image');
                 mainScreen.setAttribute('src', '#vr-source');
                 mainScreen.setAttribute('position', '0 1.6 -3');
                 mainScreen.setAttribute('width', '4');
-                mainScreen.setAttribute('height', '2.25'); // standard 16:9 aspect ratio
+                mainScreen.setAttribute('height', '2.25'); 
                 stage.appendChild(mainScreen);
 
-                // YouTube Style Ambient Layer (Massive screen behind main panel)
+                // YouTube Style Ambient Layer
                 const ambientScreen = document.createElement(isVideo ? 'a-video' : 'a-image');
                 ambientScreen.setAttribute('src', '#vr-source');
-                ambientScreen.setAttribute('position', '0 1.6 -3.5'); // Slightly behind the main screen
-                ambientScreen.setAttribute('width', '12');            // Massive scale
+                ambientScreen.setAttribute('position', '0 1.6 -3.5'); 
+                ambientScreen.setAttribute('width', '12');            
                 ambientScreen.setAttribute('height', '6.75');
-                ambientScreen.setAttribute('opacity', '0.25');        // Soft glowing opacity
-                // WebGL doesn't have native CSS blur components, so blending opacity does the heavy lifting
+                ambientScreen.setAttribute('opacity', '0.25');        
                 stage.appendChild(ambientScreen);
             }
         }
     </script>
 </body>
 </html>
-

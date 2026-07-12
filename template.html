@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me</title>
+    <title>Charley Thomas</title>
     <style>
         body {
             background-color: #030424;
@@ -11,21 +11,31 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            /* Extra padding at the top and bottom creates the scrolling room */
+            padding-top: 50vh;
+            padding-bottom: 100vh;
             color: #ffffff;
+            box-sizing: border-box;
         }
         .container {
             text-align: center;
             padding: 20px;
+        }
+        .centered-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        </div>
+        <img src="images/eg1.png" alt="Charley Thomas" class="centered-image">
+    </div>
 
 </body>
 </html>

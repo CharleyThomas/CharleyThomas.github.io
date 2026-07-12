@@ -38,7 +38,7 @@
             padding: 0 20px;
             box-sizing: border-box;
         }
-        /* Hamburger Button */
+        /* Hamburger Button with Smooth Animation */
         .menu-button {
             background: none;
             border: none;
@@ -54,15 +54,28 @@
         .menu-button span {
             display: block;
             width: 100%;
-            height: 2px;
+            height: 3px; /* Thicker lines */
             background-color: #ffffff;
-            transition: 0.3s;
+            border-radius: 3px; /* Rounder edges */
+            transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth animation */
+            transform-origin: left center;
+        }
+        /* Cross (X) Animation States */
+        .menu-button.open span:nth-child(1) {
+            transform: rotate(45deg) translate(0, -2px);
+        }
+        .menu-button.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .menu-button.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(0, 2px);
         }
         /* Dropdown Menu Layout */
         .dropdown-menu {
             position: fixed;
             top: 60px;
-            left: -250px; /* Hidden off-screen by default */
+            left: -250px;
             width: 250px;
             height: calc(100vh - 60px);
             background: rgba(3, 4, 36, 0.95);
@@ -74,11 +87,9 @@
             transition: left 0.3s ease;
             z-index: 1001;
         }
-        /* Show menu state */
         .dropdown-menu.open {
             left: 0;
         }
-        /* Temporary links styling inside dropdown */
         .dropdown-menu a {
             display: block;
             color: #ffffff;
@@ -114,7 +125,7 @@
 <body>
 
     <nav class="navbar">
-        <button class="menu-button" onclick="toggleMenu()">
+        <button class="menu-button" id="menuButton" onclick="toggleMenu()">
             <span></span>
             <span></span>
             <span></span>
@@ -136,7 +147,10 @@
     <script>
         function toggleMenu() {
             const menu = document.getElementById('dropdownMenu');
+            const button = document.getElementById('menuButton');
+            
             menu.classList.toggle('open');
+            button.classList.toggle('open');
         }
     </script>
 

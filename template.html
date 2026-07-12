@@ -21,26 +21,25 @@
             position: relative;
             min-height: 150vh;
         }
-        /* Glassmorphism Navigation Bar that expands vertically */
+        /* Glassmorphism Navigation Bar */
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 60px; /* Default collapsed height */
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.05); /* Stays uniform */
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 1000;
             box-sizing: border-box;
             overflow: hidden;
-            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth liquid-like expansion */
+            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        /* Expanded state for navbar */
+        /* Expanded state keeps the exact same color/transparency */
         .navbar.open {
             height: 260px; 
-            background: rgba(3, 4, 36, 0.85); /* Slightly darker tint when open for legibility */
         }
         /* Header section inside nav to keep button fixed at top */
         .nav-header {
@@ -100,7 +99,7 @@
             opacity: 1;
             transform: translateY(0);
             pointer-events: auto;
-            transition-delay: 0.1s; /* Waits slightly for the expand animation */
+            transition-delay: 0.1s;
         }
         .nav-links a {
             color: rgba(255, 255, 255, 0.8);
@@ -162,7 +161,7 @@
         <img src="images/eg.png" alt="Charley Thomas" class="centered-image">
     </div>
 
-    <div class="version-tag">v1.0.2</div>
+    <div class="version-tag">v1.0.3</div>
 
     <script>
         function toggleMenu() {

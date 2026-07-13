@@ -38,7 +38,7 @@
             overflow: hidden;
             transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        /* Expanded state to fit links and the copyright statement */
+        /* Expanded state */
         .navbar.open {
             height: 400px; 
         }
@@ -129,14 +129,27 @@
             color: #ffffff;
             padding-left: 4px;
         }
-        /* Copyright Statement styled inside the dropdown menu */
-        .copyright-tag {
+        /* Bottom Row inside Dropdown Menu */
+        .dropdown-footer {
             margin-top: 20px;
             padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .copyright-tag {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.4);
             font-weight: 300;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .version-tag {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: monospace;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
         }
         .container {
             text-align: center;
@@ -148,18 +161,6 @@
             height: auto;
             display: block;
             margin: 0 auto;
-        }
-        /* Version Tag */
-        .version-tag {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.4);
-            font-family: monospace;
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 4px 8px;
-            border-radius: 4px;
         }
     </style>
 </head>
@@ -174,7 +175,7 @@
             </button>
             
             <div class="nav-icons">
-                <a href="https://github.com" target="_blank" title="GitHub"><i class="bi bi-github"></i></a>
+                <a href="https://github.com/CharleyThomas" target="_blank" title="GitHub"><i class="bi bi-github"></i></a>
             </div>
         </div>
         <div class="nav-links">
@@ -184,15 +185,17 @@
             <a href="#">Concepts</a>
             <a href="#">Simulations</a>
             <a href="#">Other</a>
-            <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
+            
+            <div class="dropdown-footer">
+                <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
+                <div class="version-tag">v1.0.7</div>
+            </div>
         </div>
     </nav>
 
     <div class="container">
         <img src="images/eg.png" alt="Charley Thomas" class="centered-image">
     </div>
-
-    <div class="version-tag">v1.0.5</div>
 
     <script>
         function toggleMenu() {

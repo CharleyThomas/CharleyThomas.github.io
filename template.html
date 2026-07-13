@@ -17,7 +17,7 @@
         }
         body {
             background-color: #030424;
-            font-family: 'Inter', sans-serif; /* Set font to Inter universally */
+            font-family: 'Inter', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -46,13 +46,23 @@
         .navbar.open {
             height: 400px; 
         }
-        /* Header section holding the menu button and GitHub icon */
+        /* Header section holding the menu button, logo, and GitHub icon */
         .nav-header {
             height: 60px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 20px;
+            position: relative; /* Allows perfect absolute centering for the logo */
+        }
+        /* Perfectly Centered Logo */
+        .nav-logo {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 32px; /* Keeps the logo cleanly within the 60px bar */
+            width: auto;
+            pointer-events: none; /* Prevents it from interfering with clicks */
         }
         /* Precise Hamburger Button */
         .menu-button {
@@ -178,6 +188,8 @@
                 <span></span>
             </button>
             
+            <img src="images/logo.png" alt="Logo" class="nav-logo">
+            
             <div class="nav-icons">
                 <a href="https://github.com/CharleyThomas" target="_blank" title="GitHub"><i class="bi bi-github"></i></a>
             </div>
@@ -192,7 +204,7 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.8</div>
+                <div class="version-tag">v1.0.9</div>
             </div>
         </div>
     </nav>

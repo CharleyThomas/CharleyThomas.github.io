@@ -21,12 +21,12 @@
         body {
             background-color: #051f0e; /* Deep dark green */
             
-            /* Scrolling grid that connects to all edges but offsets the first lines */
+            /* Symmetrical scrolling grid */
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
             background-size: 40px 40px;
-            background-position: 50% 20px; /* Centers horizontally and pushes 20px down from the top */
+            background-position: center center; /* Distributes leftover space perfectly symmetrically on all 4 sides */
             
             font-family: 'Inter', sans-serif;
             display: flex;
@@ -210,7 +210,7 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.20</div>
+                <div class="version-tag">v1.0.21</div>
             </div>
         </div>
     </nav>

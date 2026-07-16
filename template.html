@@ -29,6 +29,21 @@
             position: relative;
             min-height: 150vh;
         }
+        /* Robust Fixed Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            pointer-events: none;
+        }
         /* Glassmorphism Navigation Bar */
         .navbar {
             position: fixed;
@@ -202,7 +217,7 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.14</div>
+                <div class="version-tag">v1.0.17</div>
             </div>
         </div>
     </nav>

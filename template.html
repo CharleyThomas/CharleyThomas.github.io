@@ -21,12 +21,12 @@
         body {
             background-color: #051f0e; /* Deep dark green */
             
-            /* Symmetrical scrolling grid */
+            /* Symmetrical scrolling grid snapped to the top-left */
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
             background-size: 40px 40px;
-            background-position: center center; /* Distributes leftover space perfectly symmetrically on all 4 sides */
+            background-position: 0 0; 
             
             font-family: 'Inter', sans-serif;
             display: flex;
@@ -196,7 +196,7 @@
             <img src="images/logo.png" alt="Logo" class="nav-logo">
             
             <div class="nav-icons">
-                <a href="https://github.com/CharleyThomas" target="_blank" title="GitHub"><i class="bi bi-github"></i></a>
+                <a href="https://github.com" target="_blank" title="GitHub"><i class="bi bi-github"></i></a>
             </div>
         </div>
         <div class="nav-links">
@@ -210,7 +210,7 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.21</div>
+                <div class="version-tag">v1.0.22</div>
             </div>
         </div>
     </nav>

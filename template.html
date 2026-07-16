@@ -20,12 +20,6 @@
         }
         body {
             background-color: #051f0e; /* Deep dark green */
-            /* Scrolling grid background */
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            
             font-family: 'Inter', sans-serif;
             display: flex;
             flex-direction: column;
@@ -34,6 +28,21 @@
             box-sizing: border-box;
             position: relative;
             min-height: 150vh;
+        }
+        /* Scrolling grid background with edge spacing */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 20px; /* Distance from top edge */
+            bottom: 20px; /* Distance from bottom edge */
+            left: 20px; /* Distance from left edge */
+            right: 20px; /* Distance from right edge */
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px; /* Slightly smaller grid */
+            z-index: -1;
+            pointer-events: none;
         }
         /* Glassmorphism Navigation Bar */
         .navbar {
@@ -208,7 +217,7 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.18</div>
+                <div class="version-tag">v1.0.19</div>
             </div>
         </div>
     </nav>

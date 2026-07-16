@@ -19,7 +19,7 @@
             padding: 0;
         }
         body {
-            background-color: #030424;
+            background-color: #051f0e; /* Deep dark green */
             font-family: 'Inter', sans-serif;
             display: flex;
             flex-direction: column;
@@ -45,7 +45,7 @@
             overflow: hidden;
             transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        /* Expanded state - Height increased to fit the new links */
+        /* Expanded state */
         .navbar.open {
             height: 440px; 
         }
@@ -173,12 +173,6 @@
             padding: 20px;
             margin-top: 25vh;
         }
-        .centered-image {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
     </style>
 </head>
 <body>
@@ -208,14 +202,13 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.12</div>
+                <div class="version-tag">v1.0.14</div>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        <img src="images/eg.png" alt="Charley Thomas" class="centered-image">
-    </div>
+        </div>
 
     <script>
         function toggleMenu() {

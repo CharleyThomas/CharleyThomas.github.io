@@ -19,7 +19,7 @@
             padding: 0;
         }
         body {
-            background-color: #030424; /* Deep dark blue */
+            background-color: #030424; 
             font-family: 'Inter', sans-serif;
             display: flex;
             flex-direction: column;
@@ -46,11 +46,9 @@
             overflow: hidden;
             transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        /* Expanded state */
         .navbar.open {
             height: 480px; 
         }
-        /* Header section holding the menu button, logo, and GitHub icon */
         .nav-header {
             height: 60px;
             display: flex;
@@ -59,7 +57,6 @@
             padding: 0 20px;
             position: relative;
         }
-        /* Perfectly Centered Logo */
         .nav-logo {
             position: absolute;
             left: 50%;
@@ -68,16 +65,18 @@
             width: auto;
             pointer-events: none;
         }
-        /* Precise Hamburger Button */
+        
+        /* Robust Hamburger Button */
         .menu-button {
-            background: none;
+            background: transparent;
             border: none;
             cursor: pointer;
-            width: 24px;
-            height: 24px;
+            width: 40px; /* Expanded hit area */
+            height: 40px; /* Expanded hit area */
             padding: 0;
             z-index: 1002;
             position: relative;
+            outline: none;
         }
         .menu-button span {
             display: block;
@@ -87,24 +86,24 @@
             background-color: #ffffff;
             border-radius: 99px;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-            left: 0;
+            left: 8px; /* Centers the lines inside the 40px box */
+            pointer-events: none; /* Prevents lines from eating the click */
         }
-        .menu-button span:nth-child(1) { top: 3px; }
-        .menu-button span:nth-child(2) { top: 11px; }
-        .menu-button span:nth-child(3) { top: 19px; }
+        .menu-button span:nth-child(1) { top: 12px; }
+        .menu-button span:nth-child(2) { top: 19px; }
+        .menu-button span:nth-child(3) { top: 26px; }
 
-        /* Symmetrical Cross (X) Animation */
         .menu-button.open span:nth-child(1) {
-            transform: translateY(8px) rotate(45deg);
+            transform: translateY(7px) rotate(45deg);
         }
         .menu-button.open span:nth-child(2) {
             opacity: 0;
             transform: scaleX(0);
         }
         .menu-button.open span:nth-child(3) {
-            transform: translateY(-8px) rotate(-45deg);
+            transform: translateY(-7px) rotate(-45deg);
         }
-        /* GitHub Icon Styling */
+        
         .nav-icons {
             display: flex;
             align-items: center;
@@ -119,7 +118,7 @@
             color: #ffffff;
             transform: scale(1.05);
         }
-        /* Menu content links container */
+        
         .nav-links {
             display: flex;
             flex-direction: column;
@@ -147,7 +146,7 @@
             color: #ffffff;
             padding-left: 4px;
         }
-        /* Bottom Row inside Dropdown Menu */
+        
         .dropdown-footer {
             margin-top: 20px;
             padding-top: 15px;
@@ -170,7 +169,6 @@
             border-radius: 4px;
         }
         
-        /* Main Container */
         .container {
             text-align: center;
             padding: 20px;
@@ -204,3 +202,26 @@
             <a href="/simulations">Simulations</a>
             <a href="/downloads">Downloads</a>
             <a href="/other">Other</a>
+            
+            <div class="dropdown-footer">
+                <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
+                <div class="version-tag">v1.0.30</div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        </div>
+
+    <script>
+        function toggleMenu() {
+            const navbar = document.getElementById('navbar');
+            const button = document.getElementById('menuButton');
+            
+            navbar.classList.toggle('open');
+            button.classList.toggle('open');
+        }
+    </script>
+
+</body>
+</html>

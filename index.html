@@ -236,10 +236,7 @@
             position: absolute;
             padding: 30px;
             max-width: 450px;
-            background: rgba(255, 255, 255, 0.85); 
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: transparent;
             z-index: 10;
         }
         
@@ -254,13 +251,14 @@
             font-size: 28px;
             font-weight: 600;
             letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
         
         .carousel-overlay p {
             margin: 0 0 20px 0;
             font-size: 16px;
             line-height: 1.5;
-            opacity: 0.8;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
 
         .carousel-buttons {
@@ -269,23 +267,25 @@
             justify-content: flex-end;
         }
 
+        /* Solid White Buttons with Sharp Corners */
         .carousel-buttons .btn {
-            background-color: transparent;
-            color: inherit;
-            border: 1px solid currentColor;
-            padding: 8px 16px;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 10px 18px;
             font-family: 'Inter', sans-serif;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 0px; /* Sharp corners */
             cursor: pointer;
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, background-color 0.2s ease;
         }
 
         .carousel-buttons .btn:hover {
-            background-color: currentColor;
-            color: #ffffff; /* Will invert based on text-colour */
+            background-color: #e2e2e2;
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -316,7 +316,7 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.40</div>
+                <div class="version-tag">v1.0.42</div>
             </div>
         </div>
     </nav>
@@ -341,12 +341,11 @@
             }).catch(err => console.error("Failed to copy: ", err));
         }
 
-        // --- Custom Text Parser & Carousel Builder ---
+        // Custom Text Parser & Carousel Builder
         async function loadDynamicCarousel() {
             const track = document.getElementById('autoCarouselTrack');
             
             try {
-                // 1. Fetch your custom index.txt file
                 const response = await fetch('carrousels/index.txt');
                 if (!response.ok) throw new Error("Could not find index.txt");
                 
@@ -356,12 +355,10 @@
                 const slides = [];
                 let currentSlide = null;
 
-                // 2. Parse the text file line by line
                 lines.forEach(line => {
                     const tLine = line.trim();
                     if (!tLine) return;
 
-                    // Match the ---1--- block dividers
                     if (tLine.match(/^---\d+---$/)) {
                         if (currentSlide) {
                             slides.push(currentSlide);
@@ -372,7 +369,6 @@
                         return;
                     }
 
-                    // Extract data into the current slide
                     if (currentSlide) {
                         if (tLine.startsWith('image:')) currentSlide.image = tLine.replace('image:', '').trim();
                         else if (tLine.startsWith('text-colour:')) currentSlide.color = tLine.replace('text-colour:', '').trim();
@@ -380,16 +376,14 @@
                         else if (tLine.startsWith('title:')) currentSlide.title = tLine.replace('title:', '').trim();
                         else if (tLine.startsWith('body:')) currentSlide.body = tLine.replace('body:', '').trim();
                         
-                        // Parse buttons: e.g., "1: Go there (goto:link)"
                         else if (tLine.match(/^\d+:/)) {
-                            // Extract everything after the first colon
                             const btnRaw = tLine.substring(tLine.indexOf(':') + 1).trim(); 
                             const btnMatch = btnRaw.match(/(.*?)\s*\((.*?):(.*)\)/);
                             
                             if (btnMatch) {
                                 currentSlide.buttons.push({
                                     text: btnMatch[1].trim(),
-                                    action: btnMatch[2].trim(), // goto or copy
+                                    action: btnMatch[2].trim(),
                                     link: btnMatch[3].trim()
                                 });
                             }
@@ -397,7 +391,6 @@
                     }
                 });
 
-                // 3. Generate HTML for each parsed slide
                 track.innerHTML = slides.map(slide => {
                     const colorHex = slide.color.toLowerCase() === 'black' ? '#000000' : slide.color;
                     const posClass = slide.location === 'bottom-right' ? 'overlay-bottom-right' : 'overlay-bottom-right';
@@ -427,7 +420,6 @@
                     </div>`;
                 }).join('');
 
-                // 4. Start the 7.5s animation loop if we have more than 1 slide
                 if (slides.length > 1) {
                     setInterval(() => {
                         track.style.transition = 'transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -447,7 +439,6 @@
             }
         }
 
-        // Run the script as soon as the page loads
         loadDynamicCarousel();
     </script>
 </body>

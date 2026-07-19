@@ -27,7 +27,7 @@
             color: #ffffff;
             box-sizing: border-box;
             position: relative;
-            min-height: 150vh; 
+            min-height: 100vh; 
         }
         
         /* Glassmorphism Navigation Bar */
@@ -172,58 +172,75 @@
         
         /* Main Container */
         .container {
-            text-align: center;
+            width: 100%;
+            max-width: 1200px;
             padding: 20px;
-            margin-top: 100px; 
+            margin-top: 80px; /* Space for the fixed navbar */
             flex-grow: 1; 
+            box-sizing: border-box;
         }
 
-    </style>
-</head>
-<body>
-
-    <nav class="navbar" id="navbar">
-        <div class="nav-header">
-            <button class="menu-button" id="menuButton" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            
-            <img src="images/logo.png" alt="Logo" class="nav-logo">
-            
-            <div class="nav-icons">
-                <a href="https://github.com" target="_blank" title="GitHub"><i class="bi bi-github"></i></a>
-            </div>
-        </div>
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Project Progress</a>
-            <a href="#">Showcase</a>
-            <a href="#">Software</a>
-            <a href="#">Concepts</a>
-            <a href="#">Simulations</a>
-            <a href="#">Other</a>
-            
-            <div class="dropdown-footer">
-                <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.27</div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container">
-        </div>
-
-    <script>
-        function toggleMenu() {
-            const navbar = document.getElementById('navbar');
-            const button = document.getElementById('menuButton');
-            
-            navbar.classList.toggle('open');
-            button.classList.toggle('open');
+        /* --- Custom Carousel Styles --- */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto 40px auto;
+            overflow: hidden;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
-    </script>
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+        }
 
-</body>
-</html>
+        .carousel-slide {
+            min-width: 100%;
+            padding: 80px 40px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .carousel-slide h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin: 0 0 16px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .carousel-slide p {
+            font-size: 16px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Carousel Navigation Buttons */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.2s ease, transform 0.2s ease;

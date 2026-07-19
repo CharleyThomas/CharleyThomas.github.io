@@ -231,19 +231,36 @@
             justify-content: center;
         }
 
-        /* Text Overlay */
+        /* Text Overlay General Styles */
         .carousel-overlay {
             position: absolute;
             padding: 30px;
             max-width: 450px;
             background: transparent;
             z-index: 10;
+            box-sizing: border-box;
         }
-        
+
+        /* --- Corner Positions --- */
         .overlay-bottom-right {
             bottom: 5%;
             right: 5%;
             text-align: right;
+        }
+        .overlay-bottom-left {
+            bottom: 5%;
+            left: 5%;
+            text-align: left;
+        }
+        .overlay-top-right {
+            top: 12%; 
+            right: 5%;
+            text-align: right;
+        }
+        .overlay-top-left {
+            top: 12%; 
+            left: 5%;
+            text-align: left;
         }
 
         .carousel-overlay h2 {
@@ -264,7 +281,16 @@
         .carousel-buttons {
             display: flex;
             gap: 10px;
+        }
+
+        /* Adjust button alignment based on location */
+        .overlay-bottom-right .carousel-buttons,
+        .overlay-top-right .carousel-buttons {
             justify-content: flex-end;
+        }
+        .overlay-bottom-left .carousel-buttons,
+        .overlay-top-left .carousel-buttons {
+            justify-content: flex-start;
         }
 
         /* Dynamic Buttons with Sharp Corners & Flat Hover */
@@ -282,7 +308,7 @@
         }
 
         .carousel-buttons .btn:hover {
-            opacity: 0.85; /* Subtle color shift without any vertical movement */
+            opacity: 0.85; 
         }
     </style>
 </head>
@@ -313,7 +339,7 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.43</div>
+                <div class="version-tag">v1.0.45</div>
             </div>
         </div>
     </nav>
@@ -391,12 +417,12 @@
                 track.innerHTML = slides.map(slide => {
                     const colorHex = slide.color.toLowerCase() === 'black' ? '#000000' : slide.color;
                     
-                    // Dynamic button styling based on chosen text-colour
                     const btnBg = colorHex;
                     const btnTextColor = (colorHex === '#000000' || colorHex === 'black') ? '#ffffff' : '#000000';
                     const btnStyle = `style="background-color: ${btnBg}; color: ${btnTextColor};"`;
 
-                    const posClass = slide.location === 'bottom-right' ? 'overlay-bottom-right' : 'overlay-bottom-right';
+                    const locKey = slide.location ? slide.location.toLowerCase().trim() : 'bottom-right';
+                    const posClass = `overlay-${locKey}`;
                     
                     const buttonsHtml = slide.buttons.map(btn => {
                         let safeLink = btn.link;

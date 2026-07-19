@@ -28,6 +28,7 @@
             box-sizing: border-box;
             position: relative;
             min-height: 150vh; 
+            overflow-x: hidden; 
         }
         
         /* Glassmorphism Navigation Bar */
@@ -66,7 +67,7 @@
             pointer-events: none;
         }
         
-        /* Restored Menu Button Layout with Invisible Expanded Hit Area */
+        /* Menu Button */
         .menu-button {
             background: none;
             border: none;
@@ -77,7 +78,6 @@
             z-index: 1002;
             position: relative;
         }
-        /* The invisible clickable box surrounding the button */
         .menu-button::after {
             content: '';
             position: absolute;
@@ -185,23 +185,13 @@
             width: 100%;
         }
 
-        /* --- END OF UNTOUCHED CORE CSS --- */
-
-
-        /* --- NEW STYLES BELOW --- */
-
-        /* Forces the page to completely ignore horizontal scroll overflow caused by 100vw */
-        body {
-            overflow-x: hidden;
-        }
-
-        /* --- Full-Width Infinite Auto Carousel --- */
+        /* --- Full-Width Auto Carousel --- */
         .auto-carousel {
             position: relative;
             width: 100vw;
             left: 50%;
             transform: translateX(-50%);
-            margin-top: -60px; /* Pulls the carousel up exactly flush with the 60px navbar */
+            margin-top: -60px; 
             overflow: hidden;
             background-color: #030424; 
         }
@@ -209,22 +199,24 @@
         .auto-carousel-track {
             display: flex;
             width: 100%;
-            /* Note: Animation transition is now handled perfectly in JS to allow infinite looping */
         }
 
-        .auto-carousel-track img {
-            width: 100vw;
-            height: auto;
-            aspect-ratio: 2000 / 887;
-            object-fit: cover;
-            flex-shrink: 0;
-            background-color: #030424; 
+        .carousel-slide {
             position: relative;
+            flex: 0 0 100vw; 
+            aspect-ratio: 2000 / 887;
+            background-color: #030424; 
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
             color: transparent; 
         }
         
-        /* Custom clean broken image fallback */
-        .auto-carousel-track img::before {
+        .carousel-slide img::before {
             content: attr(alt);
             position: absolute;
             top: 0;
@@ -239,6 +231,62 @@
             justify-content: center;
         }
 
+        /* Text Overlay */
+        .carousel-overlay {
+            position: absolute;
+            padding: 30px;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        
+        .overlay-bottom-right {
+            bottom: 5%;
+            right: 5%;
+            text-align: right;
+        }
+
+        .carousel-overlay h2 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        
+        .carousel-overlay p {
+            margin: 0 0 20px 0;
+            font-size: 16px;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+
+        .carousel-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .carousel-buttons .btn {
+            background-color: transparent;
+            color: inherit;
+            border: 1px solid currentColor;
+            padding: 8px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .carousel-buttons .btn:hover {
+            background-color: currentColor;
+            color: #ffffff; /* Will invert based on text-colour */
+        }
     </style>
 </head>
 <body>
@@ -268,55 +316,139 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.38</div>
+                <div class="version-tag">v1.0.40</div>
             </div>
         </div>
     </nav>
 
     <div class="container">
-        
         <div class="auto-carousel">
-            <div class="auto-carousel-track" id="autoCarouselTrack">
-                <img src="carrousels/images/index/Zelda.png" alt="Zelda Frame 1 (Image Loading...)">
-                <img src="carrousels/images/index/zelda2.png" alt="Zelda Frame 2 (Image Loading...)">
-                <img src="carrousels/images/index/Zelda3.png" alt="Zelda Frame 3 (Image Loading...)">
-                <img src="carrousels/images/index/Zelda4.png" alt="Zelda Frame 4 (Image Loading...)">
-                <img src="carrousels/images/index/Zelda5.png" alt="Zelda Frame 5 (Image Loading...)">
-            </div>
+            <div class="auto-carousel-track" id="autoCarouselTrack"></div>
         </div>
-
     </div>
 
     <script>
-        // Untouched Navbar Toggle
+        // Navbar Toggle
         function toggleMenu() {
-            const navbar = document.getElementById('navbar');
-            const button = document.getElementById('menuButton');
-            
-            navbar.classList.toggle('open');
-            button.classList.toggle('open');
+            document.getElementById('navbar').classList.toggle('open');
+            document.getElementById('menuButton').classList.toggle('open');
         }
 
-        // New Seamless Infinite Loop Carousel Logic
-        const track = document.getElementById('autoCarouselTrack');
+        // Copy to Clipboard Utility
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Link saved to clipboard!");
+            }).catch(err => console.error("Failed to copy: ", err));
+        }
 
-        setInterval(() => {
-            // Turn on the smooth animation
-            track.style.transition = 'transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
-            // Slide exactly one full image width to the left
-            track.style.transform = `translateX(-100vw)`;
+        // --- Custom Text Parser & Carousel Builder ---
+        async function loadDynamicCarousel() {
+            const track = document.getElementById('autoCarouselTrack');
+            
+            try {
+                // 1. Fetch your custom index.txt file
+                const response = await fetch('carrousels/index.txt');
+                if (!response.ok) throw new Error("Could not find index.txt");
+                
+                const text = await response.text();
+                const lines = text.split('\n');
+                
+                const slides = [];
+                let currentSlide = null;
 
-            // Wait exactly the length of the animation (1200ms = 1.2s)
-            setTimeout(() => {
-                // Instantly move the first image to the very end of the line
-                track.appendChild(track.firstElementChild);
-                // Turn off animation so we can secretly snap the track back to the start position
-                track.style.transition = 'none';
-                track.style.transform = `translateX(0)`;
-            }, 1200);
+                // 2. Parse the text file line by line
+                lines.forEach(line => {
+                    const tLine = line.trim();
+                    if (!tLine) return;
 
-        }, 5000); // Triggers every 5 seconds
+                    // Match the ---1--- block dividers
+                    if (tLine.match(/^---\d+---$/)) {
+                        if (currentSlide) {
+                            slides.push(currentSlide);
+                            currentSlide = null;
+                        } else {
+                            currentSlide = { buttons: [] };
+                        }
+                        return;
+                    }
+
+                    // Extract data into the current slide
+                    if (currentSlide) {
+                        if (tLine.startsWith('image:')) currentSlide.image = tLine.replace('image:', '').trim();
+                        else if (tLine.startsWith('text-colour:')) currentSlide.color = tLine.replace('text-colour:', '').trim();
+                        else if (tLine.startsWith('location:')) currentSlide.location = tLine.replace('location:', '').trim();
+                        else if (tLine.startsWith('title:')) currentSlide.title = tLine.replace('title:', '').trim();
+                        else if (tLine.startsWith('body:')) currentSlide.body = tLine.replace('body:', '').trim();
+                        
+                        // Parse buttons: e.g., "1: Go there (goto:link)"
+                        else if (tLine.match(/^\d+:/)) {
+                            // Extract everything after the first colon
+                            const btnRaw = tLine.substring(tLine.indexOf(':') + 1).trim(); 
+                            const btnMatch = btnRaw.match(/(.*?)\s*\((.*?):(.*)\)/);
+                            
+                            if (btnMatch) {
+                                currentSlide.buttons.push({
+                                    text: btnMatch[1].trim(),
+                                    action: btnMatch[2].trim(), // goto or copy
+                                    link: btnMatch[3].trim()
+                                });
+                            }
+                        }
+                    }
+                });
+
+                // 3. Generate HTML for each parsed slide
+                track.innerHTML = slides.map(slide => {
+                    const colorHex = slide.color.toLowerCase() === 'black' ? '#000000' : slide.color;
+                    const posClass = slide.location === 'bottom-right' ? 'overlay-bottom-right' : 'overlay-bottom-right';
+                    
+                    const buttonsHtml = slide.buttons.map(btn => {
+                        let safeLink = btn.link;
+                        if (!safeLink.startsWith('http')) safeLink = 'https://' + safeLink;
+
+                        if (btn.action === 'goto') {
+                            return `<a href="${safeLink}" class="btn">${btn.text}</a>`;
+                        } else if (btn.action === 'copy') {
+                            return `<button class="btn" onclick="copyToClipboard('${safeLink}')">${btn.text}</button>`;
+                        }
+                        return '';
+                    }).join('');
+
+                    return `
+                    <div class="carousel-slide">
+                        <img src="${slide.image}" alt="${slide.title}">
+                        <div class="carousel-overlay ${posClass}" style="color: ${colorHex};">
+                            <h2>${slide.title}</h2>
+                            <p>${slide.body}</p>
+                            <div class="carousel-buttons">
+                                ${buttonsHtml}
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('');
+
+                // 4. Start the 7.5s animation loop if we have more than 1 slide
+                if (slides.length > 1) {
+                    setInterval(() => {
+                        track.style.transition = 'transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+                        track.style.transform = `translateX(-100vw)`;
+                        
+                        setTimeout(() => {
+                            track.appendChild(track.firstElementChild);
+                            track.style.transition = 'none';
+                            track.style.transform = `translateX(0)`;
+                        }, 1200);
+                    }, 7500); 
+                }
+
+            } catch (error) {
+                console.error('Carousel Error:', error);
+                track.innerHTML = `<div style="padding:40px; color:white;">Error loading carousel data. Check console.</div>`;
+            }
+        }
+
+        // Run the script as soon as the page loads
+        loadDynamicCarousel();
     </script>
-
 </body>
 </html>

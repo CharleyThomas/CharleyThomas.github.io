@@ -185,7 +185,7 @@
             width: 100%;
         }
 
-        /* --- NEW: Full-Width Auto Carousel --- */
+        /* --- Full-Width Auto Carousel --- */
         .auto-carousel {
             position: relative;
             width: 100vw;
@@ -193,7 +193,7 @@
             transform: translateX(-50%);
             margin-top: -60px; /* Pulls the carousel up exactly flush with the 60px navbar */
             overflow: hidden;
-            background-color: #030424; /* Matches site background perfectly */
+            background-color: #030424; 
         }
 
         .auto-carousel-track {
@@ -208,12 +208,25 @@
             aspect-ratio: 2000 / 887;
             object-fit: cover;
             flex-shrink: 0;
+            background-color: #030424; 
+            position: relative;
+            color: transparent; /* Hides default broken image icon/text */
+        }
+        
+        /* Custom clean broken image fallback */
+        .auto-carousel-track img::before {
+            content: attr(alt);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #030424;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #030424; /* Fallback if image fails to load */
-            color: rgba(255, 255, 255, 0.3); /* Muted text color for the missing alt tag */
-            font-size: 14px;
         }
 
     </style>
@@ -245,7 +258,7 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.34</div>
+                <div class="version-tag">v1.0.35</div>
             </div>
         </div>
     </nav>
@@ -254,8 +267,8 @@
         
         <div class="auto-carousel">
             <div class="auto-carousel-track" id="autoCarouselTrack">
-                <img src="/carrousels/image/index/Zelda.png" alt="Zelda Frame 1 (Image Loading...)">
-                <img src="/carrousels/image/index/Zelda2.png" alt="Zelda Frame 2 (Image Loading...)">
+                <img src="carrousels/image/index/Zelda.png" alt="Zelda Frame 1 (Image Loading...)">
+                <img src="carrousels/image/index/Zelda2.png" alt="Zelda Frame 2 (Image Loading...)">
             </div>
         </div>
 

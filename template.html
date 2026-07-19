@@ -66,17 +66,25 @@
             pointer-events: none;
         }
         
-        /* Robust Hamburger Button */
+        /* Restored Menu Button Layout with Invisible Expanded Hit Area */
         .menu-button {
-            background: transparent;
+            background: none;
             border: none;
             cursor: pointer;
-            width: 40px; /* Expanded hit area */
-            height: 40px; /* Expanded hit area */
+            width: 24px;
+            height: 24px;
             padding: 0;
             z-index: 1002;
             position: relative;
-            outline: none;
+        }
+        /* The invisible clickable box surrounding the button */
+        .menu-button::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            bottom: -15px;
+            left: -15px;
+            right: -15px;
         }
         .menu-button span {
             display: block;
@@ -86,22 +94,22 @@
             background-color: #ffffff;
             border-radius: 99px;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-            left: 8px; /* Centers the lines inside the 40px box */
-            pointer-events: none; /* Prevents lines from eating the click */
+            left: 0;
+            pointer-events: none; /* Stops the lines from blocking the click */
         }
-        .menu-button span:nth-child(1) { top: 12px; }
-        .menu-button span:nth-child(2) { top: 19px; }
-        .menu-button span:nth-child(3) { top: 26px; }
+        .menu-button span:nth-child(1) { top: 3px; }
+        .menu-button span:nth-child(2) { top: 11px; }
+        .menu-button span:nth-child(3) { top: 19px; }
 
         .menu-button.open span:nth-child(1) {
-            transform: translateY(7px) rotate(45deg);
+            transform: translateY(8px) rotate(45deg);
         }
         .menu-button.open span:nth-child(2) {
             opacity: 0;
             transform: scaleX(0);
         }
         .menu-button.open span:nth-child(3) {
-            transform: translateY(-7px) rotate(-45deg);
+            transform: translateY(-8px) rotate(-45deg);
         }
         
         .nav-icons {
@@ -205,7 +213,7 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.30</div>
+                <div class="version-tag">v1.0.31</div>
             </div>
         </div>
     </nav>

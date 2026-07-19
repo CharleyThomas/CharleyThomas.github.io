@@ -185,7 +185,17 @@
             width: 100%;
         }
 
-        /* --- Full-Width Auto Carousel --- */
+        /* --- END OF UNTOUCHED CORE CSS --- */
+
+
+        /* --- NEW STYLES BELOW --- */
+
+        /* Forces the page to completely ignore horizontal scroll overflow caused by 100vw */
+        body {
+            overflow-x: hidden;
+        }
+
+        /* --- Full-Width Infinite Auto Carousel --- */
         .auto-carousel {
             position: relative;
             width: 100vw;
@@ -199,7 +209,7 @@
         .auto-carousel-track {
             display: flex;
             width: 100%;
-            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Note: Animation transition is now handled perfectly in JS to allow infinite looping */
         }
 
         .auto-carousel-track img {
@@ -210,7 +220,7 @@
             flex-shrink: 0;
             background-color: #030424; 
             position: relative;
-            color: transparent; /* Hides default broken image icon/text */
+            color: transparent; 
         }
         
         /* Custom clean broken image fallback */
@@ -258,7 +268,7 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.37</div>
+                <div class="version-tag">v1.0.38</div>
             </div>
         </div>
     </nav>
@@ -269,6 +279,9 @@
             <div class="auto-carousel-track" id="autoCarouselTrack">
                 <img src="carrousels/images/index/Zelda.png" alt="Zelda Frame 1 (Image Loading...)">
                 <img src="carrousels/images/index/zelda2.png" alt="Zelda Frame 2 (Image Loading...)">
+                <img src="carrousels/images/index/Zelda3.png" alt="Zelda Frame 3 (Image Loading...)">
+                <img src="carrousels/images/index/Zelda4.png" alt="Zelda Frame 4 (Image Loading...)">
+                <img src="carrousels/images/index/Zelda5.png" alt="Zelda Frame 5 (Image Loading...)">
             </div>
         </div>
 
@@ -284,17 +297,25 @@
             button.classList.toggle('open');
         }
 
-        // Auto-Carousel Logic
+        // New Seamless Infinite Loop Carousel Logic
         const track = document.getElementById('autoCarouselTrack');
-        const slides = track.querySelectorAll('img');
-        const totalSlides = slides.length;
-        let currentSlide = 0;
 
-        // Auto-slides every 5 seconds (5000 milliseconds)
         setInterval(() => {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            track.style.transform = `translateX(-${currentSlide * 100}vw)`;
-        }, 5000);
+            // Turn on the smooth animation
+            track.style.transition = 'transform 1.2s cubic-bezier(0.4, 0, 0.2, 1)';
+            // Slide exactly one full image width to the left
+            track.style.transform = `translateX(-100vw)`;
+
+            // Wait exactly the length of the animation (1200ms = 1.2s)
+            setTimeout(() => {
+                // Instantly move the first image to the very end of the line
+                track.appendChild(track.firstElementChild);
+                // Turn off animation so we can secretly snap the track back to the start position
+                track.style.transition = 'none';
+                track.style.transform = `translateX(0)`;
+            }, 1200);
+
+        }, 5000); // Triggers every 5 seconds
     </script>
 
 </body>

@@ -47,7 +47,7 @@
             transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .navbar.open {
-            height: 440px; /* Fine-tuned perfectly to 440px */
+            height: 440px; 
         }
         .nav-header {
             height: 60px;
@@ -95,7 +95,7 @@
             border-radius: 99px;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
             left: 0;
-            pointer-events: none; /* Stops the lines from blocking the click */
+            pointer-events: none; 
         }
         .menu-button span:nth-child(1) { top: 3px; }
         .menu-button span:nth-child(2) { top: 11px; }
@@ -182,6 +182,32 @@
             padding: 20px;
             margin-top: 100px; 
             flex-grow: 1; 
+            width: 100%; /* Ensures container scales correctly */
+        }
+
+        /* --- NEW: Full-Width Auto Carousel --- */
+        .auto-carousel {
+            position: relative;
+            width: 100vw;
+            left: 50%;
+            transform: translateX(-50%); /* Breaks out of container padding to fill screen */
+            overflow: hidden;
+            background-color: #000000;
+        }
+
+        .auto-carousel-track {
+            display: flex;
+            width: 100%;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth slide animation */
+        }
+
+        .auto-carousel-track img {
+            width: 100vw;
+            height: auto;
+            aspect-ratio: 2000 / 887; /* Forces exact requested proportions */
+            object-fit: cover;
+            flex-shrink: 0;
+            display: block;
         }
 
     </style>
@@ -219,9 +245,18 @@
     </nav>
 
     <div class="container">
+        
+        <div class="auto-carousel">
+            <div class="auto-carousel-track" id="autoCarouselTrack">
+                <img src="/carrousels/image/index/Zelda.png" alt="Zelda Frame 1">
+                <img src="/carrousels/image/index/Zelda2.png" alt="Zelda Frame 2">
+            </div>
         </div>
 
+    </div>
+
     <script>
+        // Existing Navbar Toggle
         function toggleMenu() {
             const navbar = document.getElementById('navbar');
             const button = document.getElementById('menuButton');
@@ -229,6 +264,18 @@
             navbar.classList.toggle('open');
             button.classList.toggle('open');
         }
+
+        // New Auto-Carousel Logic
+        const track = document.getElementById('autoCarouselTrack');
+        const slides = track.querySelectorAll('img');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+
+        // Auto-slides every 5 seconds (5000 milliseconds)
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            track.style.transform = `translateX(-${currentSlide * 100}vw)`;
+        }, 5000);
     </script>
 
 </body>

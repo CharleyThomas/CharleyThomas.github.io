@@ -1,5 +1,5 @@
 ---1---
-image: /carrousels/images/index/
+image: /carrousels/images/index/Zelda.png
 text-colour: black
 location: bottom-right
 title: Zelda Showcase
@@ -10,7 +10,7 @@ buttons: 2
 ---1---
 
 ---2---
-image: /carrousels/images/index/
+image: /carrousels/images/index/Zelda.png
 text-colour: black
 location: bottom-right
 title: Zelda Showcase
@@ -21,7 +21,7 @@ buttons: 2
 ---2---
 
 ---3---
-image: /carrousels/images/index/
+image: /carrousels/images/index/Zelda.png
 text-colour: black
 location: bottom-right
 title: Zelda Showcase
@@ -32,7 +32,7 @@ buttons: 2
 ---3---
 
 ---4---
-image: /carrousels/images/index/
+image: /carrousels/images/index/Zelda.png
 text-colour: black
 location: bottom-right
 title: Zelda Showcase
@@ -43,7 +43,7 @@ buttons: 2
 ---4---
 
 ---5---
-image: /carrousels/images/index/
+image: /carrousels/images/index/Zelda.png
 text-colour: black
 location: bottom-right
 title: Zelda Showcase

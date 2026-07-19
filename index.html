@@ -47,7 +47,7 @@
             transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .navbar.open {
-            height: 440px; 
+            height: 440px; /* Fine-tuned perfectly to 440px */
         }
         .nav-header {
             height: 60px;
@@ -65,6 +65,8 @@
             width: auto;
             pointer-events: none;
         }
+        
+        /* Restored Menu Button Layout with Invisible Expanded Hit Area */
         .menu-button {
             background: none;
             border: none;
@@ -75,6 +77,15 @@
             z-index: 1002;
             position: relative;
         }
+        /* The invisible clickable box surrounding the button */
+        .menu-button::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            bottom: -15px;
+            left: -15px;
+            right: -15px;
+        }
         .menu-button span {
             display: block;
             position: absolute;
@@ -84,6 +95,7 @@
             border-radius: 99px;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
             left: 0;
+            pointer-events: none; /* Stops the lines from blocking the click */
         }
         .menu-button span:nth-child(1) { top: 3px; }
         .menu-button span:nth-child(2) { top: 11px; }
@@ -171,6 +183,7 @@
             margin-top: 100px; 
             flex-grow: 1; 
         }
+
     </style>
 </head>
 <body>
@@ -190,17 +203,17 @@
             </div>
         </div>
         <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Project Progress</a>
-            <a href="#">Showcase</a>
-            <a href="#">Software</a>
-            <a href="#">Concepts</a>
-            <a href="#">Simulations</a>
-            <a href="#">Other</a>
+            <a href="/index.html">Home</a>
+            <a href="/progress">Project Progress</a>
+            <a href="/showcase">Showcase</a>
+            <a href="/concepts">Concepts</a>
+            <a href="/simulations">Simulations</a>
+            <a href="/downloads">Downloads</a>
+            <a href="/other">Other</a>
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.27</div>
+                <div class="version-tag">v1.0.34</div>
             </div>
         </div>
     </nav>

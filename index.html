@@ -267,25 +267,22 @@
             justify-content: flex-end;
         }
 
-        /* Solid White Buttons with Sharp Corners */
+        /* Dynamic Buttons with Sharp Corners & Flat Hover */
         .carousel-buttons .btn {
-            background-color: #ffffff;
-            color: #000000;
             border: none;
             padding: 10px 18px;
             font-family: 'Inter', sans-serif;
             font-size: 14px;
             font-weight: 600;
             text-decoration: none;
-            border-radius: 0px; /* Sharp corners */
+            border-radius: 0px; 
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s ease, background-color 0.2s ease;
+            transition: opacity 0.2s ease;
         }
 
         .carousel-buttons .btn:hover {
-            background-color: #e2e2e2;
-            transform: translateY(-2px);
+            opacity: 0.85; /* Subtle color shift without any vertical movement */
         }
     </style>
 </head>
@@ -316,7 +313,7 @@
             
             <div class="dropdown-footer">
                 <div class="copyright-tag">&copy; 2026 Charley Thomas</div>
-                <div class="version-tag">v1.0.42</div>
+                <div class="version-tag">v1.0.43</div>
             </div>
         </div>
     </nav>
@@ -393,6 +390,12 @@
 
                 track.innerHTML = slides.map(slide => {
                     const colorHex = slide.color.toLowerCase() === 'black' ? '#000000' : slide.color;
+                    
+                    // Dynamic button styling based on chosen text-colour
+                    const btnBg = colorHex;
+                    const btnTextColor = (colorHex === '#000000' || colorHex === 'black') ? '#ffffff' : '#000000';
+                    const btnStyle = `style="background-color: ${btnBg}; color: ${btnTextColor};"`;
+
                     const posClass = slide.location === 'bottom-right' ? 'overlay-bottom-right' : 'overlay-bottom-right';
                     
                     const buttonsHtml = slide.buttons.map(btn => {
@@ -400,9 +403,9 @@
                         if (!safeLink.startsWith('http')) safeLink = 'https://' + safeLink;
 
                         if (btn.action === 'goto') {
-                            return `<a href="${safeLink}" class="btn">${btn.text}</a>`;
+                            return `<a href="${safeLink}" class="btn" ${btnStyle}>${btn.text}</a>`;
                         } else if (btn.action === 'copy') {
-                            return `<button class="btn" onclick="copyToClipboard('${safeLink}')">${btn.text}</button>`;
+                            return `<button class="btn" ${btnStyle} onclick="copyToClipboard('${safeLink}')">${btn.text}</button>`;
                         }
                         return '';
                     }).join('');

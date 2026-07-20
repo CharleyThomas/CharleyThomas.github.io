@@ -1,0 +1,36 @@
+-----Setup-----
+  ---Defalts---
+  bg_colour: #------ 100%
+  image: none
+  font: /fonts/main/inter.WOFF2
+  favicon: images/icon.png
+  ---Defalts---
+
+  ---NavBar---
+  colour: #------
+  blur: --%
+  logo: centre
+    image: /images/logo.png
+    opacity: 100%
+  ---NavBar---
+-----Setup-----
+
+-----About-----
+  ---General---
+  bg_colour: #FFFFFF 0%
+  font: /fonts/main/inter.WOFF2
+  ---General---
+
+  ---Image---
+  image: /images/index/Me.png
+  size: 1000px x 1000px
+  location: left
+  ---Image---
+  
+  ---Text---
+  title: About Me
+  body: I am myself
+  colour: #FFFFF 100%
+  location: right
+  ---Text---
+-----About-----

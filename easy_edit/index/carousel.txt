@@ -1,1 +1,53 @@
+---1---
+image: /carrousels/images/index/Zelda.png
+text-colour: black
+location: bottom-right
+title: Zelda Showcase
+body: A showcase featuring games such as Breath of the Wild and more
+buttons: 1
+  1: Go there (goto:charleythomas.github.io/showcase/zelda)
+---1---
 
+---2---
+image: /carrousels/images/index/Zelda.png
+text-colour: white
+location: bottom-left
+title: Zelda 
+body: A showcase
+buttons: 3
+  1: Go there (goto:charleythomas.github.io/showcase/zelda)
+  2: Save (copy:charleythomas.github.io/showcase/zelda)
+---2---
+
+---3---
+image: /carrousels/images/index/Zelda.png
+text-colour: black
+location: top-right
+title: Zelda Showcase
+body: A showcase featuring games such as Breath of the Wild and more
+buttons: 1
+  1: Go there (goto:charleythomas.github.io/showcase/zelda)
+  2: Save (copy:charleythomas.github.io/showcase/zelda)
+---3---
+
+---4---
+image: /carrousels/images/index/Zelda.png
+text-colour: black
+location: top-left
+title: Zelda Showcase
+body: A showcase featuring games such as Breath of the Wild and more
+buttons: 2
+  1: Go there (goto:charleythomas.github.io/showcase/zelda)
+  2: Save (copy:charleythomas.github.io/showcase/zelda)
+---4---
+
+---5---
+image: /carrousels/images/index
+text-colour: 
+location: 
+title: 
+body: 
+buttons: 2
+  1: Go there (goto:charleythomas.github.io/)
+  2: Save (copy:charleythomas.github.io/)
+---5---
